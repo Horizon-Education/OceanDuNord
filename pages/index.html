@@ -9,12 +9,11 @@
     <style>
         :root {
             --vert: #029443;
+            --vert-fonce: #017536;
             --jaune: #F3E03E;
-            --bleu: #0E1E7A;
             --blanc: #FFFFFF;
             --gris-clair: #F5F7F8;
             --gris-texte: #2E2E2E;
-            --rouge: #D82424;
             --radius: 16px;
             --shadow: 0 4px 20px rgba(2, 148, 67, 0.1);
         }
@@ -29,58 +28,47 @@
             padding-bottom: 80px;
         }
 
-        .container { max-width: 100%; padding: 20px; }
+        /* AppBar */
+        .appbar {
+            background-color: var(--vert);
+            padding: 15px 20px;
+            color: white;
+            position: relative;
+        }
 
-        /* Header */
-        .header {
+        .appbar-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
         }
 
         .logo img {
-            height: 50px;
+            height: 40px;
             width: auto;
         }
 
-        .profile-btn {
-            width: 45px; height: 45px;
-            background-color: var(--vert);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: 600;
+        .user-greeting {
+            text-align: right;
+        }
+
+        .greeting-small {
+            font-size: 12px;
+            opacity: 0.9;
+            display: block;
+            line-height: 1;
+        }
+
+        .user-name {
             font-size: 18px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .profile-btn:hover { transform: scale(1.05); }
-
-        /* Section Titre */
-        .welcome-section {
-            margin-bottom: 30px;
-        }
-        .welcome-section h1 {
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 10px;
-        }
-        .welcome-section h1 span {
-            color: var(--vert);
-            font-weight: 700;
-        }
-        .welcome-section p {
-            font-size: 16px;
-            color: #666;
-            max-width: 300px;
+            font-weight: 600;
+            display: block;
+            line-height: 1.2;
         }
 
-        /* Destinations Populaires */
+        /* Contenu principal */
+        .container { padding: 20px; }
+
+        /* Section Destinations (2 cartes seulement) */
         .section-title {
             display: flex;
             justify-content: space-between;
@@ -91,11 +79,14 @@
             font-size: 20px;
             font-weight: 600;
         }
-        .see-all {
+        .see-more {
             font-size: 14px;
             color: var(--vert);
             text-decoration: none;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .destinations-grid {
@@ -114,7 +105,7 @@
             border: 2px solid transparent;
             cursor: pointer;
         }
-        .destination-card:hover {
+        .destination-card.active {
             border-color: var(--vert);
             transform: translateY(-5px);
             box-shadow: var(--shadow);
@@ -161,45 +152,45 @@
             gap: 5px;
         }
 
-        /* Section Services */
-        .services-grid {
+        /* Section Actions Rapides */
+        .quick-actions {
+            margin-bottom: 40px;
+        }
+
+        .actions-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 40px;
         }
-        .service-card {
+
+        .action-card {
             background-color: var(--blanc);
             border-radius: var(--radius);
             padding: 25px 20px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .service-card:hover {
+        .action-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow);
         }
-        .service-icon {
+        .action-icon {
             width: 60px; height: 60px;
             margin: 0 auto 15px;
-            background-color: rgba(14, 30, 122, 0.1);
+            background-color: rgba(2, 148, 67, 0.1);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--bleu);
+            color: var(--vert);
             font-size: 24px;
         }
-        .service-card h3 {
+        .action-card h3 {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .service-card p {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.4;
+            margin-bottom: 0;
         }
 
         /* Section Réserver Voyage */
@@ -215,11 +206,7 @@
             font-weight: 600;
             margin-bottom: 20px;
             color: var(--gris-texte);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .booking-title i { color: var(--vert); }
 
         .search-inputs {
             display: flex;
@@ -254,13 +241,13 @@
             font-family: 'Poppins', sans-serif;
             color: var(--gris-texte);
             outline: none;
+            cursor: pointer;
         }
-        .input-group input::placeholder { color: #999; }
 
         .swap-button {
             align-self: center;
             width: 50px; height: 50px;
-            background: linear-gradient(135deg, var(--vert), var(--bleu));
+            background: var(--vert);
             border: none;
             border-radius: 50%;
             color: white;
@@ -275,56 +262,68 @@
         }
         .swap-button:hover { transform: rotate(180deg) scale(1.05); }
 
-        /* Carte Estimation Prix */
-        .price-estimate-card {
-            background: linear-gradient(135deg, var(--vert), var(--bleu));
+        /* Villes prédéfinies */
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .city-btn {
+            padding: 12px 8px;
+            background-color: var(--gris-clair);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gris-texte);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .city-btn:hover {
+            background-color: rgba(2, 148, 67, 0.1);
+            border-color: var(--vert);
+        }
+        .city-btn.active {
+            background-color: var(--vert);
+            color: white;
+            border-color: var(--vert);
+        }
+
+        /* Carte Estimation Prix Simplifiée */
+        .price-card {
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
             border-radius: var(--radius);
             padding: 25px;
             color: white;
             margin-bottom: 25px;
-            display: none; /* Cachée par défaut */
+            display: none;
+            text-align: center;
         }
-        .price-estimate-card.active { display: block; animation: fadeIn 0.5s ease; }
+        .price-card.active { display: block; animation: fadeIn 0.5s ease; }
 
-        .price-estimate-card .estimate-label {
+        .estimate-label {
             font-size: 14px;
             opacity: 0.9;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             display: block;
         }
-        .price-estimate-card .price {
-            font-size: 36px;
+        .price {
+            font-size: 42px;
             font-weight: 700;
             margin-bottom: 5px;
             line-height: 1;
         }
-        .price-estimate-card .currency {
+        .currency {
             font-size: 16px;
             font-weight: 500;
             opacity: 0.9;
         }
-        .price-estimate-card .type {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 15px;
-        }
-        .amenities {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .amenity {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
 
-        .search-button {
+        .book-now-btn {
             width: 100%;
             padding: 18px;
             background-color: var(--jaune);
@@ -342,12 +341,15 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(243, 224, 62, 0.3);
         }
-        .search-button:hover {
+        .book-now-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(243, 224, 62, 0.4);
         }
+        .book-now-btn:active {
+            transform: translateY(-1px);
+        }
 
-        /* Bottom Navigation */
+        /* Bottom Navigation améliorée */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0;
@@ -359,6 +361,7 @@
             box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -368,203 +371,111 @@
             text-decoration: none;
             font-size: 12px;
             transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: var(--radius);
         }
         .nav-item i { font-size: 22px; }
-        .nav-item.active { color: var(--vert); }
-        .nav-item.active i { color: var(--vert); }
-
-        /* Modal Profil */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-        .modal-overlay.active { display: flex; }
-
-        .modal-content {
-            background-color: var(--blanc);
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 400px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            animation: slideUp 0.4s ease;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--vert), var(--bleu));
-            color: white;
-            padding: 25px;
-            border-radius: var(--radius) var(--radius) 0 0;
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        .modal-close:hover { background: rgba(255, 255, 255, 0.3); }
-
-        .profile-avatar {
-            width: 80px; height: 80px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        .nav-item.active {
             color: var(--vert);
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(2, 148, 67, 0.1);
         }
-        .modal-header h2 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .modal-header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .modal-body { padding: 25px; }
-        .info-group { margin-bottom: 20px; }
-        .info-group label {
-            display: block;
-            font-size: 13px;
-            color: #999;
-            margin-bottom: 5px;
-        }
-        .info-group .value {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--gris-texte);
-        }
-        .edit-profile-btn {
-            width: 100%;
-            padding: 15px;
+        .nav-item.active i { color: var(--vert); }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            width: 6px;
+            height: 6px;
             background-color: var(--vert);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-        .edit-profile-btn:hover {
-            background-color: #02823a;
-            transform: translateY(-2px);
+            border-radius: 50%;
         }
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
 
         /* Responsive */
         @media (min-width: 768px) {
             .container { max-width: 500px; margin: 0 auto; }
-            .destinations-grid, .services-grid { grid-template-columns: repeat(3, 1fr); }
+            .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); }
         }
         @media (max-width: 380px) {
-            .destinations-grid, .services-grid { grid-template-columns: 1fr; }
+            .destinations-grid, .actions-grid { grid-template-columns: 1fr; }
+            .cities-grid { grid-template-columns: repeat(2, 1fr); }
             .container { padding: 15px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header avec logo et profil -->
-        <div class="header">
+    <!-- AppBar verte -->
+    <div class="appbar">
+        <div class="appbar-content">
             <div class="logo">
-                <img src="../assets/logo.png" alt="Océan du Nord" id="logoImage">
+                <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
             </div>
-            <button class="profile-btn" id="profileBtn">JD</button>
+            <div class="user-greeting">
+                <span class="greeting-small">Bonjour</span>
+                <span class="user-name">Jean DUPONT</span>
+            </div>
         </div>
+    </div>
 
-        <!-- Section de bienvenue -->
-        <div class="welcome-section">
-            <h1>Bonjour <span id="userFirstName">Jean</span>,<br>Où allons-nous aujourd'hui ?</h1>
-            <p>Sécurité, Confort, Fiabilité - Voyagez comme jamais</p>
-        </div>
-
-        <!-- Destinations Populaires -->
+    <!-- Contenu principal -->
+    <div class="container">
+        <!-- Destinations Populaires (2 cartes seulement) -->
         <div class="section-title">
             <h2>Destinations populaires</h2>
-            <a href="#" class="see-all">Tout voir</a>
+            <a href="#" class="see-more">
+                Voir plus <i class="fas fa-chevron-right"></i>
+            </a>
         </div>
         <div class="destinations-grid" id="destinationsGrid">
-            <!-- Les cartes seront générées par JavaScript -->
+            <!-- Les 2 premières cartes seulement -->
         </div>
 
-        <!-- Nos Services -->
-        <div class="section-title">
-            <h2>Nos Services</h2>
-            <a href="#" class="see-all">Découvrir</a>
-        </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-bus"></i>
-                </div>
-                <h3>Transport Voyageurs</h3>
-                <p>Voyagez en toute sécurité et confort vers toutes nos destinations.</p>
+        <!-- Actions Rapides -->
+        <div class="quick-actions">
+            <div class="section-title">
+                <h2>Actions rapides</h2>
             </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-box"></i>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>Envoyer un colis</h3>
                 </div>
-                <h3>Service Fret</h3>
-                <p>Transportez vos colis et marchandises en toute fiabilité.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-envelope"></i>
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Envoyer un courrier</h3>
                 </div>
-                <h3>Service Courrier</h3>
-                <p>Envoyez et recevez votre courrier rapidement.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-caravan"></i>
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <h3>Louer un bus</h3>
                 </div>
-                <h3>Location Bus</h3>
-                <p>Louez un bus pour vos événements ou déplacements de groupe.</p>
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h3>Mes billets</h3>
+                </div>
             </div>
         </div>
 
         <!-- Section Réserver un Voyage -->
         <div class="booking-section">
-            <h2 class="booking-title"><i class="fas fa-ticket-alt"></i> Réserver votre voyage</h2>
+            <h2 class="booking-title">Réserver votre voyage</h2>
             
+            <!-- Champs de sélection -->
             <div class="search-inputs">
                 <div class="input-group active" id="departureGroup">
                     <i class="fas fa-map-marker-alt"></i>
@@ -581,25 +492,27 @@
                 </div>
             </div>
 
-            <!-- Carte d'estimation de prix -->
-            <div class="price-estimate-card" id="priceEstimateCard">
+            <!-- Villes prédéfinies -->
+            <div class="cities-grid" id="citiesGrid">
+                <!-- Les boutons de ville seront générés par JavaScript -->
+            </div>
+
+            <!-- Carte d'estimation de prix simplifiée -->
+            <div class="price-card" id="priceCard">
                 <span class="estimate-label">Prix estimé pour un voyage standard</span>
                 <div class="price" id="estimatedPrice">9 000</div>
                 <span class="currency">FCFA</span>
-                <div class="type" id="tripType">Trajet standard • ~6h</div>
-                <div class="amenities" id="amenitiesList">
-                    <!-- Les options de confort seront insérées ici par JavaScript -->
-                </div>
             </div>
 
-            <button class="search-button" id="searchButton">
-                <i class="fas fa-search"></i>
-                Voir les voyages disponibles
+            <!-- Bouton Réserver maintenant -->
+            <button class="book-now-btn" id="bookNowBtn">
+                <i class="fas fa-check-circle"></i>
+                Réserver ce voyage
             </button>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation améliorée -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active">
             <i class="fas fa-home"></i>
@@ -607,7 +520,7 @@
         </a>
         <a href="#" class="nav-item">
             <i class="fas fa-ticket-alt"></i>
-            <span>Mes Billets</span>
+            <span>Mes billets</span>
         </a>
         <a href="#" class="nav-item">
             <i class="fas fa-bus"></i>
@@ -619,88 +532,52 @@
         </a>
     </div>
 
-    <!-- Modal Profil -->
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="modal-close" id="closeModal">&times;</button>
-                <div class="profile-avatar">JD</div>
-                <h2 id="modalUserName">Jean DUPONT</h2>
-                <p>Client Océan du Nord depuis 2023</p>
-            </div>
-            <div class="modal-body">
-                <div class="info-group">
-                    <label>Nom complet pour les billets</label>
-                    <div class="value" id="modalFullName">Jean DUPONT</div>
-                </div>
-                <div class="info-group">
-                    <label>Téléphone</label>
-                    <div class="value" id="modalPhone">+242 06 XXX XX XX</div>
-                </div>
-                <div class="info-group">
-                    <label>Email</label>
-                    <div class="value" id="modalEmail">jean.dupont@email.com</div>
-                </div>
-                <div class="info-group">
-                    <label>Préférences</label>
-                    <div class="value">Siège fenêtre • Près de la sortie</div>
-                </div>
-                <div class="info-group">
-                    <label>Statistiques</label>
-                    <div class="value">12 voyages • 3 cette année</div>
-                </div>
-                <button class="edit-profile-btn">Modifier mon profil</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // === DONNÉES ===
         const destinations = [
-            { name: "Pointe-Noire", price: 9000, schedule: "Tous les jours", icon: "city", amenities: ["climatisation", "wifi", "confort"], duration: "~6h" },
-            { name: "Ouesso", price: 9000, schedule: "Tous les jours", icon: "tree", amenities: ["climatisation", "confort"], duration: "~8h" },
-            { name: "Nkayi", price: 7000, schedule: "Tous les jours", icon: "mountain", amenities: ["climatisation"], duration: "~4h" },
-            { name: "Oyo", price: 6000, schedule: "Tous les jours", icon: "water", amenities: ["confort"], duration: "~3h" },
-            { name: "Okoyo", price: 10000, schedule: "Mercredi Vendredi", icon: "map-marker", amenities: ["climatisation", "wifi", "collation"], duration: "~7h" },
-            { name: "Kéllé", price: 15000, schedule: "Mardi Samedi", icon: "town", amenities: ["climatisation", "wifi", "confort", "repas"], duration: "~10h" }
+            { name: "Pointe-Noire", price: 9000, schedule: "Tous les jours", icon: "city" },
+            { name: "Ouesso", price: 9000, schedule: "Tous les jours", icon: "tree" },
+            { name: "Nkayi", price: 7000, schedule: "Tous les jours", icon: "mountain" },
+            { name: "Oyo", price: 6000, schedule: "Tous les jours", icon: "water" },
+            { name: "Okoyo", price: 10000, schedule: "Mercredi Vendredi", icon: "map-marker" },
+            { name: "Kéllé", price: 15000, schedule: "Mardi Samedi", icon: "town" }
         ];
 
-        // Données utilisateur (simulées)
-        const userData = {
-            firstName: "Jean",
-            fullName: "Jean DUPONT",
-            phone: "+242 06 XXX XX XX",
-            email: "jean.dupont@email.com",
-            memberSince: "2023",
-            totalTrips: 12,
-            tripsThisYear: 3,
-            preferences: "Siège fenêtre • Près de la sortie"
-        };
+        const villes = [
+            "Brazzaville", "Pointe-Noire", "Ouesso", "Nkayi", "Oyo", 
+            "Okoyo", "Kéllé", "Sibiti", "Dolisie", "Impfondo"
+        ];
 
         // === VARIABLES ===
         let currentDeparture = "Brazzaville";
         let currentArrival = "Pointe-Noire";
 
-        // === FONCTIONS D'INITIALISATION ===
+        // === INITIALISATION ===
         function initApp() {
-            // 1. Charger les destinations
-            loadDestinations();
+            // 1. Charger les 2 premières destinations
+            loadTopDestinations();
             
-            // 2. Configurer les boutons et interactions
+            // 2. Charger les boutons de ville
+            loadCityButtons();
+            
+            // 3. Configurer les événements
             setupEventListeners();
             
-            // 3. Initialiser l'estimation de prix
+            // 4. Mettre à jour l'estimation initiale
             updatePriceEstimate();
             
-            // 4. Préparer le modal de profil
-            populateProfileModal();
+            // 5. Gérer le logo manquant
+            setupLogoFallback();
         }
 
-        function loadDestinations() {
+        function loadTopDestinations() {
             const grid = document.getElementById('destinationsGrid');
             grid.innerHTML = '';
             
-            destinations.forEach(dest => {
+            // Prendre seulement les 2 premières destinations
+            const topDestinations = destinations.slice(0, 2);
+            
+            topDestinations.forEach(dest => {
                 const card = document.createElement('div');
                 card.className = 'destination-card';
                 card.setAttribute('data-destination', dest.name);
@@ -729,61 +606,114 @@
             });
         }
 
+        function loadCityButtons() {
+            const grid = document.getElementById('citiesGrid');
+            grid.innerHTML = '';
+            
+            villes.forEach(ville => {
+                const btn = document.createElement('button');
+                btn.className = 'city-btn';
+                btn.textContent = ville;
+                
+                // Marquer Brazzaville et Pointe-Noire comme actives initialement
+                if (ville === currentDeparture || ville === currentArrival) {
+                    btn.classList.add('active');
+                }
+                
+                btn.addEventListener('click', () => selectCity(ville));
+                grid.appendChild(btn);
+            });
+        }
+
         function setupEventListeners() {
             // Bouton d'échange
             document.getElementById('swapButton').addEventListener('click', swapCities);
             
-            // Bouton de recherche
-            document.getElementById('searchButton').addEventListener('click', searchTrips);
-            
             // Groupes d'input
-            document.getElementById('departureGroup').addEventListener('click', () => setActiveInputGroup('departure'));
-            document.getElementById('arrivalGroup').addEventListener('click', () => setActiveInputGroup('arrival'));
+            document.getElementById('departureGroup').addEventListener('click', () => setActiveInput('departure'));
+            document.getElementById('arrivalGroup').addEventListener('click', () => setActiveInput('arrival'));
             
-            // Bouton profil
-            document.getElementById('profileBtn').addEventListener('click', openProfileModal);
+            // Bouton Réserver maintenant
+            document.getElementById('bookNowBtn').addEventListener('click', bookNow);
             
-            // Fermer modal
-            document.getElementById('closeModal').addEventListener('click', closeProfileModal);
-            document.getElementById('profileModal').addEventListener('click', function(e) {
-                if (e.target === this) closeProfileModal();
-            });
-            
-            // Gérer le logo manquant
-            document.getElementById('logoImage').addEventListener('error', function() {
-                this.style.display = 'none';
-                // Créer un logo de secours
-                const fallbackLogo = document.createElement('div');
-                fallbackLogo.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--vert), var(--bleu)); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px;">
-                            <i class="fas fa-ship"></i>
-                        </div>
-                        <div>
-                            <h2 style="font-size: 20px; font-weight: 700; line-height: 1.2; margin: 0;">OCÉAN <span style="color: var(--vert);">du NORD</span></h2>
-                        </div>
-                    </div>
-                `;
-                document.querySelector('.logo').appendChild(fallbackLogo);
+            // Actions rapides
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const action = this.querySelector('h3').textContent;
+                    handleQuickAction(action);
+                });
             });
         }
 
-        // === FONCTIONNALITÉS PRINCIPALES ===
-        function selectDestination(destinationName) {
-            const arrivalInput = document.getElementById('arrivalInput');
+        function setupLogoFallback() {
+            const logoImg = document.getElementById('logoImage');
+            logoImg.addEventListener('error', function() {
+                this.style.display = 'none';
+                const logoContainer = document.querySelector('.logo');
+                logoContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 20px;">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 16px; font-weight: 700; color: white;">OCÉAN</div>
+                            <div style="font-size: 14px; color: white; opacity: 0.9;">du NORD</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // === FONCTIONNALITÉS ===
+        function selectCity(ville) {
+            const activeInput = document.querySelector('.input-group.active');
+            const isDeparture = activeInput.id === 'departureGroup';
             
-            // Mettre à jour l'arrivée
-            arrivalInput.value = destinationName;
-            currentArrival = destinationName;
+            if (isDeparture) {
+                // Ne pas permettre de sélectionner la même ville pour départ et arrivée
+                if (ville === currentArrival) {
+                    alert("La ville de départ ne peut pas être la même que l'arrivée");
+                    return;
+                }
+                document.getElementById('departureInput').value = ville;
+                currentDeparture = ville;
+            } else {
+                // Ne pas permettre de sélectionner la même ville pour départ et arrivée
+                if (ville === currentDeparture) {
+                    alert("La ville d'arrivée ne peut pas être la même que le départ");
+                    return;
+                }
+                document.getElementById('arrivalInput').value = ville;
+                currentArrival = ville;
+            }
             
-            // Mettre à jour l'interface
-            setActiveInputGroup('arrival');
+            // Mettre à jour les boutons actifs
+            updateCityButtons();
             
             // Mettre à jour l'estimation de prix
             updatePriceEstimate();
             
-            // Feedback visuel sur la carte cliquée
-            highlightSelectedDestination(destinationName);
+            // Mettre à jour les destinations actives
+            updateDestinationCards();
+        }
+
+        function selectDestination(destinationName) {
+            // Sélectionner comme ville d'arrivée
+            if (destinationName === currentDeparture) {
+                alert("La ville d'arrivée ne peut pas être la même que le départ");
+                return;
+            }
+            
+            document.getElementById('arrivalInput').value = destinationName;
+            currentArrival = destinationName;
+            
+            // Activer le groupe d'arrivée
+            setActiveInput('arrival');
+            
+            // Mettre à jour l'interface
+            updateCityButtons();
+            updatePriceEstimate();
+            updateDestinationCards();
         }
 
         function swapCities() {
@@ -806,67 +736,56 @@
                 swapButton.style.transform = 'rotate(0)';
             }, 300);
             
-            // Mettre à jour l'estimation
+            // Mettre à jour l'interface
+            updateCityButtons();
             updatePriceEstimate();
-            
-            // Désélectionner les destinations
-            clearDestinationHighlights();
+            updateDestinationCards();
         }
 
         function updatePriceEstimate() {
-            const priceEstimateCard = document.getElementById('priceEstimateCard');
+            const priceCard = document.getElementById('priceCard');
             const estimatedPrice = document.getElementById('estimatedPrice');
-            const tripType = document.getElementById('tripType');
-            const amenitiesList = document.getElementById('amenitiesList');
             
             // Trouver la destination sélectionnée
             const selectedDest = destinations.find(d => d.name === currentArrival);
             
-            if (selectedDest) {
-                // Afficher la carte
-                priceEstimateCard.classList.add('active');
+            if (selectedDest && currentDeparture !== currentArrival) {
+                // Afficher la carte avec animation
+                priceCard.classList.add('active');
                 
-                // Mettre à jour le prix
-                estimatedPrice.textContent = selectedDest.price.toLocaleString();
+                // Mettre à jour le prix avec effet de comptage
+                const targetPrice = selectedDest.price;
+                const currentPrice = parseInt(estimatedPrice.textContent.replace(/\s/g, ''));
                 
-                // Mettre à jour le type et durée
-                tripType.textContent = `Trajet standard • ${selectedDest.duration}`;
-                
-                // Mettre à jour les options de confort
-                amenitiesList.innerHTML = '';
-                
-                const amenityIcons = {
-                    "climatisation": "fas fa-snowflake",
-                    "wifi": "fas fa-wifi",
-                    "confort": "fas fa-couch",
-                    "collation": "fas fa-utensils",
-                    "repas": "fas fa-utensils"
-                };
-                
-                const amenityLabels = {
-                    "climatisation": "Climatisation",
-                    "wifi": "Wi-Fi",
-                    "confort": "Siège Confort",
-                    "collation": "Collation",
-                    "repas": "Repas inclus"
-                };
-                
-                selectedDest.amenities.forEach(amenity => {
-                    const amenityEl = document.createElement('div');
-                    amenityEl.className = 'amenity';
-                    amenityEl.innerHTML = `
-                        <i class="${amenityIcons[amenity] || 'fas fa-check'}"></i>
-                        <span>${amenityLabels[amenity] || amenity}</span>
-                    `;
-                    amenitiesList.appendChild(amenityEl);
-                });
+                animatePriceChange(currentPrice, targetPrice, estimatedPrice);
             } else {
-                // Cacher la carte si destination non trouvée
-                priceEstimateCard.classList.remove('active');
+                // Cacher la carte si même ville ou destination non trouvée
+                priceCard.classList.remove('active');
             }
         }
 
-        function searchTrips() {
+        function animatePriceChange(from, to, element) {
+            const duration = 300;
+            const steps = 20;
+            const stepTime = duration / steps;
+            const increment = (to - from) / steps;
+            let current = from;
+            let step = 0;
+            
+            const timer = setInterval(() => {
+                step++;
+                current += increment;
+                
+                if (step >= steps) {
+                    current = to;
+                    clearInterval(timer);
+                }
+                
+                element.textContent = Math.round(current).toLocaleString();
+            }, stepTime);
+        }
+
+        function bookNow() {
             const departureInput = document.getElementById('departureInput');
             const arrivalInput = document.getElementById('arrivalInput');
             
@@ -881,57 +800,50 @@
                 return;
             }
             
-            // Simulation de recherche
-            const searchButton = document.getElementById('searchButton');
-            const originalText = searchButton.innerHTML;
-            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
-            searchButton.disabled = true;
+            // Trouver le prix
+            const selectedDest = destinations.find(d => d.name === currentArrival);
+            const price = selectedDest ? selectedDest.price : 0;
+            
+            // Simulation de réservation
+            const bookBtn = document.getElementById('bookNowBtn');
+            const originalText = bookBtn.innerHTML;
+            bookBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Réservation...';
+            bookBtn.disabled = true;
             
             setTimeout(() => {
                 // Réactiver le bouton
-                searchButton.innerHTML = originalText;
-                searchButton.disabled = false;
+                bookBtn.innerHTML = originalText;
+                bookBtn.disabled = false;
                 
-                // Redirection simulée vers la page des résultats
-                alert(`Redirection vers les voyages disponibles :\n${currentDeparture} → ${currentArrival}`);
-                // En réalité : window.location.href = `search-results.html?from=${currentDeparture}&to=${currentArrival}`;
+                // Redirection simulée
+                alert(`Réservation du voyage standard :\n\n${currentDeparture} → ${currentArrival}\nPrix: ${price.toLocaleString()} FCFA\n\nVous serez redirigé vers le paiement.`);
+                // En réalité : window.location.href = `booking.html?from=${currentDeparture}&to=${currentArrival}&type=standard`;
             }, 1000);
         }
 
-        // === GESTION DU PROFIL ===
-        function populateProfileModal() {
-            // Remplir les données utilisateur
-            document.getElementById('userFirstName').textContent = userData.firstName;
-            document.getElementById('modalUserName').textContent = userData.fullName;
-            document.getElementById('modalFullName').textContent = userData.fullName;
-            document.getElementById('modalPhone').textContent = userData.phone;
-            document.getElementById('modalEmail').textContent = userData.email;
-            
-            // Mettre à jour les statistiques
-            const statsElement = document.querySelector('.info-group:nth-child(5) .value');
-            statsElement.textContent = `${userData.totalTrips} voyages • ${userData.tripsThisYear} cette année`;
-            
-            // Préférences
-            const prefsElement = document.querySelector('.info-group:nth-child(4) .value');
-            prefsElement.textContent = userData.preferences;
-        }
-
-        function openProfileModal() {
-            document.getElementById('profileModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
+        function handleQuickAction(action) {
+            switch(action) {
+                case "Envoyer un colis":
+                    alert("Redirection vers le service fret...");
+                    break;
+                case "Envoyer un courrier":
+                    alert("Redirection vers le service courrier...");
+                    break;
+                case "Louer un bus":
+                    alert("Redirection vers la location de bus...");
+                    break;
+                case "Mes billets":
+                    alert("Redirection vers vos billets...");
+                    break;
+            }
         }
 
         // === FONCTIONS UTILITAIRES ===
-        function setActiveInputGroup(activeGroup) {
+        function setActiveInput(inputType) {
             const departureGroup = document.getElementById('departureGroup');
             const arrivalGroup = document.getElementById('arrivalGroup');
             
-            if (activeGroup === 'departure') {
+            if (inputType === 'departure') {
                 departureGroup.classList.add('active');
                 arrivalGroup.classList.remove('active');
             } else {
@@ -940,27 +852,27 @@
             }
         }
 
-        function highlightSelectedDestination(destinationName) {
-            clearDestinationHighlights();
-            
-            const cards = document.querySelectorAll('.destination-card');
-            cards.forEach(card => {
-                if (card.getAttribute('data-destination') === destinationName) {
-                    card.classList.add('active');
-                    card.style.borderColor = 'var(--vert)';
+        function updateCityButtons() {
+            const cityButtons = document.querySelectorAll('.city-btn');
+            cityButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === currentDeparture || btn.textContent === currentArrival) {
+                    btn.classList.add('active');
                 }
             });
         }
 
-        function clearDestinationHighlights() {
-            const cards = document.querySelectorAll('.destination-card');
-            cards.forEach(card => {
+        function updateDestinationCards() {
+            const destinationCards = document.querySelectorAll('.destination-card');
+            destinationCards.forEach(card => {
                 card.classList.remove('active');
-                card.style.borderColor = '';
+                if (card.getAttribute('data-destination') === currentArrival) {
+                    card.classList.add('active');
+                }
             });
         }
 
-        // === INITIALISATION ===
+        // === LANCER L'APPLICATION ===
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
