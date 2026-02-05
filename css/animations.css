@@ -1,0 +1,151 @@
+/* Animation d'entrée progressive */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation de rebond léger */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Animation de shake (pour les erreurs) */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Animation de rotation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Animation de scale */
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animation de gradient changeant */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animation de slide in from left */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animation de slide in from right */
+@keyframes slideInRight {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animation de pulse léger */
+@keyframes gentlePulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Classes utilitaires pour animations */
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.rotate {
+    animation: rotate 2s linear infinite;
+}
+
+.scale {
+    animation: scale 0.3s ease-out;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+}
+
+.gentle-pulse {
+    animation: gentlePulse 2s infinite;
+}
+
+/* Animation de chargement */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--primary-lighter);
+    border-top: 3px solid var(--primary-main);
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+
+/* Animation pour les notifications */
+.notification-slide {
+    animation: slideInRight 0.3s ease-out,
+               gentlePulse 2s 0.3s infinite;
+}

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Accueil - Océan du Nord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #029443;
+            --jaune: #F3E03E;
+            --bleu: #0E1E7A;
+            --blanc: #FFFFFF;
+            --gris-clair: #F5F7F8;
+            --gris-texte: #2E2E2E;
+            --rouge: #D82424;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(2, 148, 67, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container { max-width: 100%; padding: 20px; }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .profile-btn {
+            width: 45px; height: 45px;
+            background-color: var(--vert);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .profile-btn:hover { transform: scale(1.05); }
+
+        /* Section Titre */
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+        .welcome-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+        .welcome-section h1 span {
+            color: var(--vert);
+            font-weight: 700;
+        }
+        .welcome-section p {
+            font-size: 16px;
+            color: #666;
+            max-width: 300px;
+        }
+
+        /* Destinations Populaires */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .see-all {
+            font-size: 14px;
+            color: var(--vert);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .destination-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .destination-card:hover {
+            border-color: var(--vert);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .destination-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .destination-icon {
+            width: 40px; height: 40px;
+            background-color: rgba(2, 148, 67, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 18px;
+        }
+        .destination-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--vert);
+        }
+        .destination-price span {
+            font-size: 12px;
+            color: #999;
+            font-weight: 400;
+            display: block;
+            text-align: right;
+        }
+        .destination-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .destination-schedule {
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Section Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .service-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        .service-icon {
+            width: 60px; height: 60px;
+            margin: 0 auto 15px;
+            background-color: rgba(14, 30, 122, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--bleu);
+            font-size: 24px;
+        }
+        .service-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .service-card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Section Réserver Voyage */
+        .booking-section {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        .booking-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--gris-texte);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .booking-title i { color: var(--vert); }
+
+        .search-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            background-color: var(--gris-clair);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .input-group.active {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.05);
+        }
+        .input-group i {
+            color: var(--vert);
+            font-size: 20px;
+            width: 24px;
+        }
+        .input-group input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--gris-texte);
+            outline: none;
+        }
+        .input-group input::placeholder { color: #999; }
+
+        .swap-button {
+            align-self: center;
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--vert), var(--bleu));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+            z-index: 2;
+        }
+        .swap-button:hover { transform: rotate(180deg) scale(1.05); }
+
+        /* Carte Estimation Prix */
+        .price-estimate-card {
+            background: linear-gradient(135deg, var(--vert), var(--bleu));
+            border-radius: var(--radius);
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+            display: none; /* Cachée par défaut */
+        }
+        .price-estimate-card.active { display: block; animation: fadeIn 0.5s ease; }
+
+        .price-estimate-card .estimate-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .price-estimate-card .price {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        .price-estimate-card .currency {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        .price-estimate-card .type {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .amenities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .amenity {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .search-button {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--jaune);
+            border: none;
+            border-radius: 12px;
+            color: var(--gris-texte);
+            font-size: 17px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 224, 62, 0.3);
+        }
+        .search-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 224, 62, 0.4);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background-color: var(--blanc);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        .nav-item i { font-size: 22px; }
+        .nav-item.active { color: var(--vert); }
+        .nav-item.active i { color: var(--vert); }
+
+        /* Modal Profil */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--vert), var(--bleu));
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .modal-close:hover { background: rgba(255, 255, 255, 0.3); }
+
+        .profile-avatar {
+            width: 80px; height: 80px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .modal-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .modal-body { padding: 25px; }
+        .info-group { margin-bottom: 20px; }
+        .info-group label {
+            display: block;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        .info-group .value {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gris-texte);
+        }
+        .edit-profile-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--vert);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .edit-profile-btn:hover {
+            background-color: #02823a;
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container { max-width: 500px; margin: 0 auto; }
+            .destinations-grid, .services-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 380px) {
+            .destinations-grid, .services-grid { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header avec logo et profil -->
+        <div class="header">
+            <div class="logo">
+                <img src="../assets/logo.png" alt="Océan du Nord" id="logoImage">
+            </div>
+            <button class="profile-btn" id="profileBtn">JD</button>
+        </div>
+
+        <!-- Section de bienvenue -->
+        <div class="welcome-section">
+            <h1>Bonjour <span id="userFirstName">Jean</span>,<br>Où allons-nous aujourd'hui ?</h1>
+            <p>Sécurité, Confort, Fiabilité - Voyagez comme jamais</p>
+        </div>
+
+        <!-- Destinations Populaires -->
+        <div class="section-title">
+            <h2>Destinations populaires</h2>
+            <a href="#" class="see-all">Tout voir</a>
+        </div>
+        <div class="destinations-grid" id="destinationsGrid">
+            <!-- Les cartes seront générées par JavaScript -->
+        </div>
+
+        <!-- Nos Services -->
+        <div class="section-title">
+            <h2>Nos Services</h2>
+            <a href="#" class="see-all">Découvrir</a>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <h3>Transport Voyageurs</h3>
+                <p>Voyagez en toute sécurité et confort vers toutes nos destinations.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h3>Service Fret</h3>
+                <p>Transportez vos colis et marchandises en toute fiabilité.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Service Courrier</h3>
+                <p>Envoyez et recevez votre courrier rapidement.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-caravan"></i>
+                </div>
+                <h3>Location Bus</h3>
+                <p>Louez un bus pour vos événements ou déplacements de groupe.</p>
+            </div>
+        </div>
+
+        <!-- Section Réserver un Voyage -->
+        <div class="booking-section">
+            <h2 class="booking-title"><i class="fas fa-ticket-alt"></i> Réserver votre voyage</h2>
+            
+            <div class="search-inputs">
+                <div class="input-group active" id="departureGroup">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="departureInput" placeholder="Ville de départ" value="Brazzaville" readonly>
+                </div>
+                
+                <button class="swap-button" id="swapButton">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                
+                <div class="input-group" id="arrivalGroup">
+                    <i class="fas fa-flag-checkered"></i>
+                    <input type="text" id="arrivalInput" placeholder="Ville d'arrivée" value="Pointe-Noire" readonly>
+                </div>
+            </div>
+
+            <!-- Carte d'estimation de prix -->
+            <div class="price-estimate-card" id="priceEstimateCard">
+                <span class="estimate-label">Prix estimé pour un voyage standard</span>
+                <div class="price" id="estimatedPrice">9 000</div>
+                <span class="currency">FCFA</span>
+                <div class="type" id="tripType">Trajet standard • ~6h</div>
+                <div class="amenities" id="amenitiesList">
+                    <!-- Les options de confort seront insérées ici par JavaScript -->
+                </div>
+            </div>
+
+            <button class="search-button" id="searchButton">
+                <i class="fas fa-search"></i>
+                Voir les voyages disponibles
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-ticket-alt"></i>
+            <span>Mes Billets</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-bus"></i>
+            <span>Voyages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <!-- Modal Profil -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" id="closeModal">&times;</button>
+                <div class="profile-avatar">JD</div>
+                <h2 id="modalUserName">Jean DUPONT</h2>
+                <p>Client Océan du Nord depuis 2023</p>
+            </div>
+            <div class="modal-body">
+                <div class="info-group">
+                    <label>Nom complet pour les billets</label>
+                    <div class="value" id="modalFullName">Jean DUPONT</div>
+                </div>
+                <div class="info-group">
+                    <label>Téléphone</label>
+                    <div class="value" id="modalPhone">+242 06 XXX XX XX</div>
+                </div>
+                <div class="info-group">
+                    <label>Email</label>
+                    <div class="value" id="modalEmail">jean.dupont@email.com</div>
+                </div>
+                <div class="info-group">
+                    <label>Préférences</label>
+                    <div class="value">Siège fenêtre • Près de la sortie</div>
+                </div>
+                <div class="info-group">
+                    <label>Statistiques</label>
+                    <div class="value">12 voyages • 3 cette année</div>
+                </div>
+                <button class="edit-profile-btn">Modifier mon profil</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === DONNÉES ===
+        const destinations = [
+            { name: "Pointe-Noire", price: 9000, schedule: "Tous les jours", icon: "city", amenities: ["climatisation", "wifi", "confort"], duration: "~6h" },
+            { name: "Ouesso", price: 9000, schedule: "Tous les jours", icon: "tree", amenities: ["climatisation", "confort"], duration: "~8h" },
+            { name: "Nkayi", price: 7000, schedule: "Tous les jours", icon: "mountain", amenities: ["climatisation"], duration: "~4h" },
+            { name: "Oyo", price: 6000, schedule: "Tous les jours", icon: "water", amenities: ["confort"], duration: "~3h" },
+            { name: "Okoyo", price: 10000, schedule: "Mercredi Vendredi", icon: "map-marker", amenities: ["climatisation", "wifi", "collation"], duration: "~7h" },
+            { name: "Kéllé", price: 15000, schedule: "Mardi Samedi", icon: "town", amenities: ["climatisation", "wifi", "confort", "repas"], duration: "~10h" }
+        ];
+
+        // Données utilisateur (simulées)
+        const userData = {
+            firstName: "Jean",
+            fullName: "Jean DUPONT",
+            phone: "+242 06 XXX XX XX",
+            email: "jean.dupont@email.com",
+            memberSince: "2023",
+            totalTrips: 12,
+            tripsThisYear: 3,
+            preferences: "Siège fenêtre • Près de la sortie"
+        };
+
+        // === VARIABLES ===
+        let currentDeparture = "Brazzaville";
+        let currentArrival = "Pointe-Noire";
+
+        // === FONCTIONS D'INITIALISATION ===
+        function initApp() {
+            // 1. Charger les destinations
+            loadDestinations();
+            
+            // 2. Configurer les boutons et interactions
+            setupEventListeners();
+            
+            // 3. Initialiser l'estimation de prix
+            updatePriceEstimate();
+            
+            // 4. Préparer le modal de profil
+            populateProfileModal();
+        }
+
+        function loadDestinations() {
+            const grid = document.getElementById('destinationsGrid');
+            grid.innerHTML = '';
+            
+            destinations.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'destination-card';
+                card.setAttribute('data-destination', dest.name);
+                
+                // Icône dynamique
+                let iconClass = "fas fa-map-marker-alt";
+                if (dest.icon === "city") iconClass = "fas fa-city";
+                if (dest.icon === "tree") iconClass = "fas fa-tree";
+                if (dest.icon === "mountain") iconClass = "fas fa-mountain";
+                if (dest.icon === "water") iconClass = "fas fa-water";
+                if (dest.icon === "town") iconClass = "fas fa-town";
+                
+                card.innerHTML = `
+                    <div class="destination-header">
+                        <div class="destination-icon">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="destination-price">${dest.price.toLocaleString()}<span>FCFA</span></div>
+                    </div>
+                    <h3 class="destination-name">${dest.name}</h3>
+                    <p class="destination-schedule"><i class="far fa-calendar-alt"></i> ${dest.schedule}</p>
+                `;
+                
+                card.addEventListener('click', () => selectDestination(dest.name));
+                grid.appendChild(card);
+            });
+        }
+
+        function setupEventListeners() {
+            // Bouton d'échange
+            document.getElementById('swapButton').addEventListener('click', swapCities);
+            
+            // Bouton de recherche
+            document.getElementById('searchButton').addEventListener('click', searchTrips);
+            
+            // Groupes d'input
+            document.getElementById('departureGroup').addEventListener('click', () => setActiveInputGroup('departure'));
+            document.getElementById('arrivalGroup').addEventListener('click', () => setActiveInputGroup('arrival'));
+            
+            // Bouton profil
+            document.getElementById('profileBtn').addEventListener('click', openProfileModal);
+            
+            // Fermer modal
+            document.getElementById('closeModal').addEventListener('click', closeProfileModal);
+            document.getElementById('profileModal').addEventListener('click', function(e) {
+                if (e.target === this) closeProfileModal();
+            });
+            
+            // Gérer le logo manquant
+            document.getElementById('logoImage').addEventListener('error', function() {
+                this.style.display = 'none';
+                // Créer un logo de secours
+                const fallbackLogo = document.createElement('div');
+                fallbackLogo.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--vert), var(--bleu)); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px;">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 20px; font-weight: 700; line-height: 1.2; margin: 0;">OCÉAN <span style="color: var(--vert);">du NORD</span></h2>
+                        </div>
+                    </div>
+                `;
+                document.querySelector('.logo').appendChild(fallbackLogo);
+            });
+        }
+
+        // === FONCTIONNALITÉS PRINCIPALES ===
+        function selectDestination(destinationName) {
+            const arrivalInput = document.getElementById('arrivalInput');
+            
+            // Mettre à jour l'arrivée
+            arrivalInput.value = destinationName;
+            currentArrival = destinationName;
+            
+            // Mettre à jour l'interface
+            setActiveInputGroup('arrival');
+            
+            // Mettre à jour l'estimation de prix
+            updatePriceEstimate();
+            
+            // Feedback visuel sur la carte cliquée
+            highlightSelectedDestination(destinationName);
+        }
+
+        function swapCities() {
+            const departureInput = document.getElementById('departureInput');
+            const arrivalInput = document.getElementById('arrivalInput');
+            
+            // Échanger les valeurs
+            const temp = departureInput.value;
+            departureInput.value = arrivalInput.value;
+            arrivalInput.value = temp;
+            
+            // Mettre à jour les variables
+            currentDeparture = departureInput.value;
+            currentArrival = arrivalInput.value;
+            
+            // Animation
+            const swapButton = document.getElementById('swapButton');
+            swapButton.style.transform = 'rotate(180deg)';
+            setTimeout(() => {
+                swapButton.style.transform = 'rotate(0)';
+            }, 300);
+            
+            // Mettre à jour l'estimation
+            updatePriceEstimate();
+            
+            // Désélectionner les destinations
+            clearDestinationHighlights();
+        }
+
+        function updatePriceEstimate() {
+            const priceEstimateCard = document.getElementById('priceEstimateCard');
+            const estimatedPrice = document.getElementById('estimatedPrice');
+            const tripType = document.getElementById('tripType');
+            const amenitiesList = document.getElementById('amenitiesList');
+            
+            // Trouver la destination sélectionnée
+            const selectedDest = destinations.find(d => d.name === currentArrival);
+            
+            if (selectedDest) {
+                // Afficher la carte
+                priceEstimateCard.classList.add('active');
+                
+                // Mettre à jour le prix
+                estimatedPrice.textContent = selectedDest.price.toLocaleString();
+                
+                // Mettre à jour le type et durée
+                tripType.textContent = `Trajet standard • ${selectedDest.duration}`;
+                
+                // Mettre à jour les options de confort
+                amenitiesList.innerHTML = '';
+                
+                const amenityIcons = {
+                    "climatisation": "fas fa-snowflake",
+                    "wifi": "fas fa-wifi",
+                    "confort": "fas fa-couch",
+                    "collation": "fas fa-utensils",
+                    "repas": "fas fa-utensils"
+                };
+                
+                const amenityLabels = {
+                    "climatisation": "Climatisation",
+                    "wifi": "Wi-Fi",
+                    "confort": "Siège Confort",
+                    "collation": "Collation",
+                    "repas": "Repas inclus"
+                };
+                
+                selectedDest.amenities.forEach(amenity => {
+                    const amenityEl = document.createElement('div');
+                    amenityEl.className = 'amenity';
+                    amenityEl.innerHTML = `
+                        <i class="${amenityIcons[amenity] || 'fas fa-check'}"></i>
+                        <span>${amenityLabels[amenity] || amenity}</span>
+                    `;
+                    amenitiesList.appendChild(amenityEl);
+                });
+            } else {
+                // Cacher la carte si destination non trouvée
+                priceEstimateCard.classList.remove('active');
+            }
+        }
+
+        function searchTrips() {
+            const departureInput = document.getElementById('departureInput');
+            const arrivalInput = document.getElementById('arrivalInput');
+            
+            // Validation
+            if (!departureInput.value || !arrivalInput.value) {
+                alert("Veuillez sélectionner une ville de départ et d'arrivée");
+                return;
+            }
+            
+            if (departureInput.value === arrivalInput.value) {
+                alert("La ville de départ et d'arrivée doivent être différentes");
+                return;
+            }
+            
+            // Simulation de recherche
+            const searchButton = document.getElementById('searchButton');
+            const originalText = searchButton.innerHTML;
+            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+            searchButton.disabled = true;
+            
+            setTimeout(() => {
+                // Réactiver le bouton
+                searchButton.innerHTML = originalText;
+                searchButton.disabled = false;
+                
+                // Redirection simulée vers la page des résultats
+                alert(`Redirection vers les voyages disponibles :\n${currentDeparture} → ${currentArrival}`);
+                // En réalité : window.location.href = `search-results.html?from=${currentDeparture}&to=${currentArrival}`;
+            }, 1000);
+        }
+
+        // === GESTION DU PROFIL ===
+        function populateProfileModal() {
+            // Remplir les données utilisateur
+            document.getElementById('userFirstName').textContent = userData.firstName;
+            document.getElementById('modalUserName').textContent = userData.fullName;
+            document.getElementById('modalFullName').textContent = userData.fullName;
+            document.getElementById('modalPhone').textContent = userData.phone;
+            document.getElementById('modalEmail').textContent = userData.email;
+            
+            // Mettre à jour les statistiques
+            const statsElement = document.querySelector('.info-group:nth-child(5) .value');
+            statsElement.textContent = `${userData.totalTrips} voyages • ${userData.tripsThisYear} cette année`;
+            
+            // Préférences
+            const prefsElement = document.querySelector('.info-group:nth-child(4) .value');
+            prefsElement.textContent = userData.preferences;
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // === FONCTIONS UTILITAIRES ===
+        function setActiveInputGroup(activeGroup) {
+            const departureGroup = document.getElementById('departureGroup');
+            const arrivalGroup = document.getElementById('arrivalGroup');
+            
+            if (activeGroup === 'departure') {
+                departureGroup.classList.add('active');
+                arrivalGroup.classList.remove('active');
+            } else {
+                arrivalGroup.classList.add('active');
+                departureGroup.classList.remove('active');
+            }
+        }
+
+        function highlightSelectedDestination(destinationName) {
+            clearDestinationHighlights();
+            
+            const cards = document.querySelectorAll('.destination-card');
+            cards.forEach(card => {
+                if (card.getAttribute('data-destination') === destinationName) {
+                    card.classList.add('active');
+                    card.style.borderColor = 'var(--vert)';
+                }
+            });
+        }
+
+        function clearDestinationHighlights() {
+            const cards = document.querySelectorAll('.destination-card');
+            cards.forEach(card => {
+                card.classList.remove('active');
+                card.style.borderColor = '';
+            });
+        }
+
+        // === INITIALISATION ===
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
