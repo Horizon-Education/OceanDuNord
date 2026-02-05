@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Résultats - Océan du Nord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #029443;
+            --vert-fonce: #017536;
+            --jaune: #F3E03E;
+            --blanc: #FFFFFF;
+            --gris-clair: #F5F7F8;
+            --gris-texte: #2E2E2E;
+            --gris-border: #E0E0E0;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(2, 148, 67, 0.1);
+            --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --rouge: #FF4444;
+            --bleu: #4A90E2;
+            --orange: #FF9500;
+            --violet: #9C27B0;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            min-height: 100vh;
+            padding-top: 85px;
+            padding-bottom: 80px;
+        }
+
+        /* Header FIXE */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--vert);
+            padding: 15px 20px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Carte d'informations du trajet */
+        .trip-info-card {
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            border-radius: var(--radius);
+            padding: 20px;
+            color: white;
+            margin: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .trip-route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .route-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+        }
+
+        .route-point .city {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .route-point .label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .route-arrow {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 20px;
+            margin: 0 15px;
+        }
+
+        .trip-date {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+
+        .trip-date i {
+            font-size: 16px;
+        }
+
+        /* Filtres */
+        .filters-section {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .filters-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 12px 8px;
+            background-color: var(--blanc);
+            border: 2px solid var(--gris-border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gris-texte);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-btn i {
+            font-size: 16px;
+        }
+
+        .filter-btn.active {
+            background-color: var(--vert);
+            color: white;
+            border-color: var(--vert);
+        }
+
+        .filter-btn:hover:not(.active) {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.05);
+        }
+
+        /* Résultats */
+        .results-section {
+            padding: 0 20px;
+        }
+
+        .results-count {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--gris-texte);
+        }
+
+        .results-count span {
+            color: var(--vert);
+            font-weight: 700;
+        }
+
+        /* Cartes de voyage COMPACTES */
+        .trip-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 0;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .trip-card.featured {
+            border-color: var(--jaune);
+            position: relative;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--jaune);
+            color: var(--gris-texte);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .trip-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--gris-border);
+        }
+
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gris-texte);
+        }
+
+        .trip-class {
+            background-color: rgba(2, 148, 67, 0.1);
+            color: var(--vert);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .trip-class.vip {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--bleu);
+        }
+
+        .trip-class.premium {
+            background-color: rgba(255, 149, 0, 0.1);
+            color: var(--orange);
+        }
+
+        .schedule-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+        }
+
+        .time {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gris-texte);
+            margin-bottom: 2px;
+        }
+
+        .time-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .duration-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .duration {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gris-texte);
+            margin-bottom: 2px;
+        }
+
+        .duration-line {
+            width: 60px;
+            height: 2px;
+            background-color: var(--vert);
+            position: relative;
+            margin: 5px 0;
+        }
+
+        .duration-line::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            background-color: var(--vert);
+            border-radius: 50%;
+        }
+
+        .duration-line::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 6px;
+            height: 6px;
+            background-color: var(--vert);
+            border-radius: 50%;
+        }
+
+        /* Aménités COMPACTES - 3 colonnes */
+        .amenities-section {
+            padding: 12px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amenities-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-height: 60px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .amenities-grid::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.9) 50%);
+            pointer-events: none;
+        }
+
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .amenity-icon {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(2, 148, 67, 0.1);
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .amenity-name {
+            font-size: 11px;
+            color: var(--gris-texte);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Section prix et réservation */
+        .booking-section {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(2, 148, 67, 0.03);
+            border-top: 1px solid var(--gris-border);
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .price-amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--vert);
+            line-height: 1;
+        }
+
+        .price-note {
+            font-size: 10px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .book-btn {
+            background-color: var(--vert);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+        }
+
+        .book-btn:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 148, 67, 0.2);
+        }
+
+        /* Modal de détail du voyage */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            background: var(--vert);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Détails du voyage dans le modal */
+        .trip-details {
+            margin-bottom: 25px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--vert);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            background-color: var(--gris-clair);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-icon {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(2, 148, 67, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gris-texte);
+        }
+
+        /* Aménités dans le modal - DESIGN AMÉLIORÉ */
+        .amenities-modal {
+            margin-bottom: 25px;
+        }
+
+        .amenities-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .amenity-card {
+            background-color: var(--gris-clair);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .amenity-card.included {
+            background-color: rgba(2, 148, 67, 0.08);
+            border-color: rgba(2, 148, 67, 0.2);
+        }
+
+        .amenity-card.not-included {
+            opacity: 0.6;
+        }
+
+        .amenity-icon-large {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .amenity-card.not-included .amenity-icon-large {
+            color: #999;
+            background-color: #f0f0f0;
+        }
+
+        .amenity-info {
+            flex: 1;
+        }
+
+        .amenity-name-large {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--gris-texte);
+        }
+
+        .amenity-status {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .amenity-status.included {
+            color: var(--vert);
+        }
+
+        .amenity-status.not-included {
+            color: #999;
+        }
+
+        /* Prix dans le modal */
+        .price-modal {
+            background: linear-gradient(135deg, rgba(2, 148, 67, 0.1), rgba(74, 144, 226, 0.1));
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .price-total {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--vert);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .price-currency {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .price-breakdown {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Boutons dans le modal */
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            background-color: var(--vert);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confirm-btn:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 148, 67, 0.2);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cancel-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--blanc);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .bottom-nav {
+                max-width: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .trip-info-card, 
+            .filters-section,
+            .results-section {
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .amenities-container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .amenities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 350px) {
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .trip-header {
+                padding: 12px;
+            }
+            
+            .time {
+                font-size: 18px;
+            }
+            
+            .duration-line {
+                width: 50px;
+            }
+            
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header FIXE -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
+            </div>
+            <div style="width: 40px;"></div> <!-- Espace pour alignement -->
+        </div>
+    </div>
+
+    <!-- Carte d'informations du trajet -->
+    <div class="trip-info-card">
+        <div class="trip-route">
+            <div class="route-point">
+                <div class="city" id="departureCity">Brazzaville</div>
+                <div class="label">Départ</div>
+            </div>
+            <div class="route-arrow">
+                <i class="fas fa-long-arrow-alt-right"></i>
+            </div>
+            <div class="route-point">
+                <div class="city" id="arrivalCity">Dolisie</div>
+                <div class="label">Arrivée</div>
+            </div>
+        </div>
+        <div class="trip-date">
+            <i class="far fa-calendar-alt"></i>
+            <span id="selectedDate">Mercredi 22 mars 888</span>
+        </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters-section">
+        <div class="filters-title">
+            <i class="fas fa-filter"></i>
+            Filtrer les résultats
+        </div>
+        <div class="filters-grid">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-bus"></i>
+                Tous
+            </button>
+            <button class="filter-btn" data-filter="standard">
+                <i class="fas fa-chair"></i>
+                Standard
+            </button>
+            <button class="filter-btn" data-filter="vip">
+                <i class="fas fa-crown"></i>
+                VIP
+            </button>
+            <button class="filter-btn" data-filter="premium">
+                <i class="fas fa-star"></i>
+                Premium
+            </button>
+        </div>
+    </div>
+
+    <!-- Résultats -->
+    <div class="results-section">
+        <div class="results-count">
+            <span id="tripsCount">6</span> voyages disponibles
+        </div>
+        
+        <!-- Les cartes de voyage seront générées dynamiquement -->
+        <div id="tripsContainer"></div>
+    </div>
+
+    <!-- Modal de détail du voyage -->
+    <div class="modal-overlay" id="tripModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Détails du voyage</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Les détails seront insérés dynamiquement -->
+                <div id="modalTripDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="far fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="far fa-ticket-alt"></i>
+            <span>Mes billets</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-bus"></i>
+            <span>Voyages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-headset"></i>
+            <span>Assistance</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="far fa-user"></i>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <script>
+        // === DONNÉES DES VOYAGES ===
+        const tripsData = [
+            {
+                id: 1,
+                company: "Océan du Nord Express",
+                class: "vip",
+                departureTime: "06:00",
+                arrivalTime: "11:24",
+                duration: "5h 24min",
+                busNumber: "ONE-2024",
+                seatsAvailable: 12,
+                busType: "Volvo B13R",
+                driver: "Jean K.",
+                amenities: [
+                    { name: "Wifi gratuit", icon: "wifi", included: true },
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort max", icon: "couch", included: true },
+                    { name: "Repas inclus", icon: "utensils", included: true },
+                    { name: "Eau minérale", icon: "tint", included: true },
+                    { name: "Chargement USB", icon: "mobile-alt", included: true }
+                ],
+                price: 17000,
+                basePrice: 15000,
+                currency: "FCFA",
+                featured: true,
+                notes: "Arrivée 15 minutes avant le départ. Bagages limités à 20kg."
+            },
+            {
+                id: 2,
+                company: "Océan du Nord Standard",
+                class: "standard",
+                departureTime: "09:30",
+                arrivalTime: "14:54",
+                duration: "5h 24min",
+                busNumber: "ONS-1542",
+                seatsAvailable: 24,
+                busType: "Mercedes Sprinter",
+                driver: "Paul M.",
+                amenities: [
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort", icon: "chair", included: true },
+                    { name: "Eau minérale", icon: "tint", included: true },
+                    { name: "Collation", icon: "cookie", included: false },
+                    { name: "Wifi", icon: "wifi", included: false },
+                    { name: "Repas", icon: "utensils", included: false }
+                ],
+                price: 11000,
+                basePrice: 10000,
+                currency: "FCFA",
+                featured: false,
+                notes: "Service de base. Arrivée 30 minutes avant le départ."
+            },
+            {
+                id: 3,
+                company: "Océan du Nord Express",
+                class: "vip",
+                departureTime: "13:00",
+                arrivalTime: "18:24",
+                duration: "5h 24min",
+                busNumber: "ONE-2025",
+                seatsAvailable: 8,
+                busType: "Scania Irizar",
+                driver: "Marc T.",
+                amenities: [
+                    { name: "Wifi gratuit", icon: "wifi", included: true },
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort max", icon: "couch", included: true },
+                    { name: "Repas complet", icon: "utensils", included: true },
+                    { name: "Boissons", icon: "glass-martini-alt", included: true },
+                    { name: "Service VIP", icon: "concierge-bell", included: true }
+                ],
+                price: 17000,
+                basePrice: 15000,
+                currency: "FCFA",
+                featured: false,
+                notes: "Service VIP avec accueil personnalisé."
+            },
+            {
+                id: 4,
+                company: "Océan du Nord Premium",
+                class: "premium",
+                departureTime: "16:30",
+                arrivalTime: "21:54",
+                duration: "5h 24min",
+                busNumber: "ONP-001",
+                seatsAvailable: 6,
+                busType: "Setra S 431 DT",
+                driver: "Thomas L.",
+                amenities: [
+                    { name: "Wifi haut débit", icon: "wifi", included: true },
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Siège lit", icon: "bed", included: true },
+                    { name: "Repas gastronomique", icon: "utensils", included: true },
+                    { name: "Bar à bord", icon: "glass-cheers", included: true },
+                    { name: "Espace privé", icon: "user-shield", included: true },
+                    { name: "Chargement USB", icon: "mobile-alt", included: true },
+                    { name: "Divertissement", icon: "tv", included: true }
+                ],
+                price: 22000,
+                basePrice: 20000,
+                currency: "FCFA",
+                featured: true,
+                notes: "Expérience luxe avec service personnalisé."
+            },
+            {
+                id: 5,
+                company: "Transport Rapide Congo",
+                class: "standard",
+                departureTime: "07:15",
+                arrivalTime: "12:39",
+                duration: "5h 24min",
+                busNumber: "TRC-887",
+                seatsAvailable: 18,
+                busType: "Toyota Coaster",
+                driver: "Samuel K.",
+                amenities: [
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort basique", icon: "chair", included: true },
+                    { name: "Eau minérale", icon: "tint", included: true },
+                    { name: "Wifi", icon: "wifi", included: false },
+                    { name: "Repas", icon: "utensils", included: false },
+                    { name: "Chargement", icon: "mobile-alt", included: false }
+                ],
+                price: 9500,
+                basePrice: 9000,
+                currency: "FCFA",
+                featured: false,
+                notes: "Service économique. Bagages limités à 15kg."
+            },
+            {
+                id: 6,
+                company: "Voyages Confort+",
+                class: "vip",
+                departureTime: "11:45",
+                arrivalTime: "17:09",
+                duration: "5h 24min",
+                busNumber: "VC-456",
+                seatsAvailable: 10,
+                busType: "Iveco Crossway",
+                driver: "David N.",
+                amenities: [
+                    { name: "Wifi", icon: "wifi", included: true },
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort supérieur", icon: "couch", included: true },
+                    { name: "Collation premium", icon: "cookie", included: true },
+                    { name: "Service à bord", icon: "concierge-bell", included: true },
+                    { name: "Eau minérale", icon: "tint", included: true }
+                ],
+                price: 14500,
+                basePrice: 13000,
+                currency: "FCFA",
+                featured: false,
+                notes: "Confort amélioré avec collations gratuites."
+            }
+        ];
+
+        // === VARIABLES ===
+        let activeFilter = 'all';
+
+        // === INITIALISATION ===
+        function initPage() {
+            // Récupérer les paramètres de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const departure = urlParams.get('from') || 'Brazzaville';
+            const arrival = urlParams.get('to') || 'Dolisie';
+            const basePrice = urlParams.get('price') || 8000;
+
+            // Mettre à jour l'interface avec les paramètres
+            document.getElementById('departureCity').textContent = departure;
+            document.getElementById('arrivalCity').textContent = arrival;
+
+            // Générer la date du jour + 7 jours
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const dateString = nextWeek.toLocaleDateString('fr-FR', options);
+            document.getElementById('selectedDate').textContent = dateString;
+
+            // Charger les voyages
+            loadTrips();
+
+            // Configurer les événements
+            setupEventListeners();
+
+            // Gérer le logo manquant
+            setupLogoFallback();
+        }
+
+        function loadTrips() {
+            const container = document.getElementById('tripsContainer');
+            container.innerHTML = '';
+
+            const filteredTrips = tripsData.filter(trip => {
+                if (activeFilter === 'all') return true;
+                return trip.class === activeFilter;
+            });
+
+            document.getElementById('tripsCount').textContent = filteredTrips.length;
+
+            filteredTrips.forEach(trip => {
+                const card = createTripCard(trip);
+                container.appendChild(card);
+            });
+        }
+
+        function createTripCard(trip) {
+            const card = document.createElement('div');
+            card.className = 'trip-card';
+            card.setAttribute('data-trip-id', trip.id);
+            
+            if (trip.featured) {
+                card.classList.add('featured');
+            }
+
+            // Icônes pour les aménités
+            const getAmenityIcon = (iconName) => {
+                const icons = {
+                    'wifi': 'fa-wifi',
+                    'snowflake': 'fa-snowflake',
+                    'couch': 'fa-couch',
+                    'chair': 'fa-chair',
+                    'utensils': 'fa-utensils',
+                    'tint': 'fa-tint',
+                    'cookie': 'fa-cookie',
+                    'glass-martini-alt': 'fa-glass-martini-alt',
+                    'glass-cheers': 'fa-glass-cheers',
+                    'concierge-bell': 'fa-concierge-bell',
+                    'bed': 'fa-bed',
+                    'user-shield': 'fa-user-shield',
+                    'mobile-alt': 'fa-mobile-alt',
+                    'tv': 'fa-tv'
+                };
+                return icons[iconName] || 'fa-check';
+            };
+
+            // Créer le HTML des aménités (max 3 affichées)
+            const displayedAmenities = trip.amenities.slice(0, 3);
+            const amenitiesHTML = displayedAmenities.map(amenity => `
+                <div class="amenity-item">
+                    <div class="amenity-icon">
+                        <i class="fas ${getAmenityIcon(amenity.icon)}"></i>
+                    </div>
+                    <div class="amenity-name">${amenity.name}</div>
+                </div>
+            `).join('');
+
+            // Badge spécial pour Premium
+            const premiumBadge = trip.class === 'premium' ? `
+                <div class="featured-badge">
+                    <i class="fas fa-gem"></i>
+                    LUXE
+                </div>
+            ` : trip.featured ? `
+                <div class="featured-badge">
+                    <i class="fas fa-bolt"></i>
+                    POPULAIRE
+                </div>
+            ` : '';
+
+            card.innerHTML = `
+                ${premiumBadge}
+                
+                <div class="trip-header">
+                    <div class="company-info">
+                        <div class="company-name">${trip.company}</div>
+                        <div class="trip-class ${trip.class}">${trip.class.toUpperCase()}</div>
+                    </div>
+                    
+                    <div class="schedule-info">
+                        <div class="time-section">
+                            <div class="time">${trip.departureTime}</div>
+                            <div class="time-label">Départ</div>
+                        </div>
+                        
+                        <div class="duration-section">
+                            <div class="duration">${trip.duration}</div>
+                            <div class="duration-line"></div>
+                            <div class="time-label">Direct</div>
+                        </div>
+                        
+                        <div class="time-section">
+                            <div class="time">${trip.arrivalTime}</div>
+                            <div class="time-label">Arrivée</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="amenities-section">
+                    <div class="amenities-title">
+                        <i class="fas fa-list-check"></i>
+                        Services inclus
+                    </div>
+                    <div class="amenities-grid">
+                        ${amenitiesHTML}
+                    </div>
+                </div>
+                
+                <div class="booking-section">
+                    <div class="price-info">
+                        <div class="price-label">À partir de</div>
+                        <div class="price-amount">${trip.price.toLocaleString()} ${trip.currency}</div>
+                        <div class="price-note">${trip.seatsAvailable} places restantes</div>
+                    </div>
+                    
+                    <button class="book-btn" data-trip-id="${trip.id}">
+                        <i class="fas fa-eye"></i>
+                        Voir détails
+                    </button>
+                </div>
+            `;
+
+            // Ajouter l'événement de clic
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('book-btn')) {
+                    showTripDetails(trip);
+                }
+            });
+
+            // Bouton "Voir détails"
+            const detailsBtn = card.querySelector('.book-btn');
+            detailsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showTripDetails(trip);
+            });
+
+            return card;
+        }
+
+        function showTripDetails(trip) {
+            // Créer le HTML des détails
+            const getAmenityIcon = (iconName) => {
+                const icons = {
+                    'wifi': 'fa-wifi',
+                    'snowflake': 'fa-snowflake',
+                    'couch': 'fa-couch',
+                    'chair': 'fa-chair',
+                    'utensils': 'fa-utensils',
+                    'tint': 'fa-tint',
+                    'cookie': 'fa-cookie',
+                    'glass-martini-alt': 'fa-glass-martini-alt',
+                    'glass-cheers': 'fa-glass-cheers',
+                    'concierge-bell': 'fa-concierge-bell',
+                    'bed': 'fa-bed',
+                    'user-shield': 'fa-user-shield',
+                    'mobile-alt': 'fa-mobile-alt',
+                    'tv': 'fa-tv'
+                };
+                return icons[iconName] || 'fa-check';
+            };
+
+            const amenitiesHTML = trip.amenities.map(amenity => `
+                <div class="amenity-card ${amenity.included ? 'included' : 'not-included'}">
+                    <div class="amenity-icon-large">
+                        <i class="fas ${getAmenityIcon(amenity.icon)}"></i>
+                    </div>
+                    <div class="amenity-info">
+                        <div class="amenity-name-large">${amenity.name}</div>
+                        <div class="amenity-status ${amenity.included ? 'included' : 'not-included'}">
+                            ${amenity.included ? '✓ Inclus' : '✗ Non inclus'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const modalContent = document.getElementById('modalTripDetails');
+            modalContent.innerHTML = `
+                <div class="trip-details">
+                    <div class="detail-section">
+                        <div class="detail-title">
+                            <i class="fas fa-info-circle"></i>
+                            Informations générales
+                        </div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-bus"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Compagnie</div>
+                                    <div class="detail-value">${trip.company}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Classe</div>
+                                    <div class="detail-value">${trip.class.toUpperCase()}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Numéro de bus</div>
+                                    <div class="detail-value">${trip.busNumber}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Places disponibles</div>
+                                    <div class="detail-value">${trip.seatsAvailable}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-title">
+                            <i class="fas fa-clock"></i>
+                            Horaires
+                        </div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-flag-checkered"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Départ</div>
+                                    <div class="detail-value">${trip.departureTime}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Arrivée</div>
+                                    <div class="detail-value">${trip.arrivalTime}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-hourglass-half"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Durée</div>
+                                    <div class="detail-value">${trip.duration}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Chauffeur</div>
+                                    <div class="detail-value">${trip.driver}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="amenities-modal">
+                        <div class="detail-title">
+                            <i class="fas fa-concierge-bell"></i>
+                            Services et équipements
+                        </div>
+                        <div class="amenities-container">
+                            ${amenitiesHTML}
+                        </div>
+                    </div>
+                    
+                    <div class="price-modal">
+                        <div class="price-total">${trip.price.toLocaleString()} ${trip.currency}</div>
+                        <div class="price-currency">Prix par personne</div>
+                        <div class="price-breakdown">Prix de base: ${trip.basePrice.toLocaleString()} ${trip.currency} + Services: ${(trip.price - trip.basePrice).toLocaleString()} ${trip.currency}</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">${trip.notes}</div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="confirm-btn" onclick="proceedToPayment(${trip.id})">
+                        <i class="fas fa-credit-card"></i>
+                        Réserver et payer
+                    </button>
+                    <button class="cancel-btn" id="cancelModal">
+                        Fermer
+                    </button>
+                </div>
+            `;
+
+            // Ouvrir le modal
+            document.getElementById('tripModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Ajouter l'événement au bouton Fermer
+            document.getElementById('cancelModal').addEventListener('click', closeTripModal);
+        }
+
+        function closeTripModal() {
+            document.getElementById('tripModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function proceedToPayment(tripId) {
+            const trip = tripsData.find(t => t.id === tripId);
+            if (trip) {
+                // Récupérer les villes de départ et d'arrivée
+                const departure = document.getElementById('departureCity').textContent;
+                const arrival = document.getElementById('arrivalCity').textContent;
+                
+                // Rediriger vers la page de paiement
+                window.location.href = `payment.html?tripId=${tripId}&from=${encodeURIComponent(departure)}&to=${encodeURIComponent(arrival)}&price=${trip.price}`;
+            }
+        }
+
+        function setupEventListeners() {
+            // Bouton retour
+            document.getElementById('backBtn').addEventListener('click', () => {
+                window.history.back();
+            });
+
+            // Filtres
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    activeFilter = this.getAttribute('data-filter');
+                    loadTrips();
+                });
+            });
+
+            // Modal de détail
+            document.getElementById('closeModal').addEventListener('click', closeTripModal);
+            document.getElementById('tripModal').addEventListener('click', function(e) {
+                if (e.target === this) closeTripModal();
+            });
+        }
+
+        function setupLogoFallback() {
+            const logoImg = document.getElementById('logoImage');
+            logoImg.addEventListener('error', function() {
+                this.style.display = 'none';
+                const logoContainer = document.querySelector('.logo');
+                logoContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 20px;">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 16px; font-weight: 700; color: white;">OCÉAN</div>
+                            <div style="font-size: 14px; color: white; opacity: 0.9;">du NORD</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // === LANCER LA PAGE ===
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

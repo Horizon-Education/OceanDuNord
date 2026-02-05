@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paiement - Océan du Nord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #029443;
+            --vert-fonce: #017536;
+            --jaune: #F3E03E;
+            --blanc: #FFFFFF;
+            --gris-clair: #F5F7F8;
+            --gris-texte: #2E2E2E;
+            --gris-border: #E0E0E0;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(2, 148, 67, 0.1);
+            --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --rouge: #FF4444;
+            --bleu: #4A90E2;
+            --orange: #FF9500;
+            --violet: #9C27B0;
+            --mtn-yellow: #FFCC00;
+            --airtel-red: #E30613;
+            --visa-blue: #1A1F71;
+            --mastercard-red: #EB001B;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            min-height: 100vh;
+            padding-top: 85px;
+            padding-bottom: 80px;
+        }
+
+        /* Header FIXE */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--vert);
+            padding: 15px 20px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .container {
+            padding: 0 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Titre principal */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 20px 0 30px;
+            color: var(--gris-texte);
+            text-align: center;
+        }
+
+        /* Carte d'informations */
+        .info-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--gris-texte);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Formulaire */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gris-texte);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gris-border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--vert);
+            box-shadow: 0 0 0 3px rgba(2, 148, 67, 0.1);
+        }
+
+        /* Sélecteur personnalisé */
+        .custom-select {
+            position: relative;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+        }
+
+        .form-input[readonly] {
+            background-color: var(--gris-clair);
+            cursor: pointer;
+        }
+
+        /* Section méthodes de paiement */
+        .payment-section {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Méthodes de paiement */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            border: 2px solid var(--gris-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-method:hover {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.05);
+        }
+
+        .payment-method.active {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.1);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .payment-icon.mtn {
+            background-color: var(--mtn-yellow);
+        }
+
+        .payment-icon.airtel {
+            background-color: var(--airtel-red);
+        }
+
+        .payment-icon.card {
+            background: linear-gradient(45deg, var(--visa-blue), var(--mastercard-red));
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .payment-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .payment-check {
+            color: var(--vert);
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .payment-method.active .payment-check {
+            opacity: 1;
+        }
+
+        /* Formulaires de paiement */
+        .payment-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Info Mobile Money */
+        .mobile-money-info {
+            background-color: rgba(2, 148, 67, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 4px solid var(--vert);
+        }
+
+        .info-title-small {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gris-texte);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .warning-text {
+            font-size: 14px;
+            color: var(--orange);
+            margin-top: 10px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Bouton de paiement */
+        .payment-btn-container {
+            margin: 30px 0;
+        }
+
+        .payment-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: var(--vert);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 6px 20px rgba(2, 148, 67, 0.2);
+        }
+
+        .payment-btn:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(2, 148, 67, 0.3);
+        }
+
+        .payment-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal de sélection */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            background: var(--vert);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            padding: 16px;
+            border: 2px solid var(--gris-border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option-item:hover {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.05);
+        }
+
+        .option-item.selected {
+            border-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.1);
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--blanc);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .info-card,
+            .payment-section {
+                padding: 20px;
+            }
+
+            .payment-method {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .payment-method {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .payment-info {
+                width: 100%;
+            }
+
+            .logo-text {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header FIXE -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
+                <div class="logo-text">OCÉAN DU NORD</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container">
+        <h1 class="page-title">Finaliser votre réservation</h1>
+
+        <!-- Informations voyageur -->
+        <div class="info-card">
+            <div class="info-title">
+                <i class="fas fa-user"></i>
+                Informations voyageur
+            </div>
+            
+            <div class="form-group">
+                <label>Nom complet du voyageur</label>
+                <input type="text" 
+                       id="passengerName" 
+                       class="form-input" 
+                       value="Bénie AKOUALA"
+                       placeholder="Entrez le nom du voyageur">
+                <span class="form-hint">Nom qui apparaîtra sur le billet</span>
+            </div>
+
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <input type="tel" 
+                       id="passengerPhone" 
+                       class="form-input" 
+                       value="+242 06 XXX XX XX"
+                       placeholder="Votre numéro de téléphone">
+                <span class="form-hint">Pour les notifications et la confirmation de paiement</span>
+            </div>
+
+            <div class="form-group">
+                <label>Tranche d'âge</label>
+                <div class="custom-select">
+                    <input type="text" 
+                           id="ageGroup" 
+                           class="form-input" 
+                           value="Adulte"
+                           readonly
+                           placeholder="Sélectionnez une tranche d'âge">
+                    <div class="select-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <span class="form-hint">Pour adapter les services à bord</span>
+            </div>
+        </div>
+
+        <!-- Section méthodes de paiement -->
+        <div class="payment-section">
+            <div class="info-title">
+                <i class="fas fa-credit-card"></i>
+                Méthode de paiement
+            </div>
+
+            <div class="payment-methods">
+                <!-- MTN Mobile Money -->
+                <div class="payment-method active" data-method="mtn">
+                    <div class="payment-icon mtn">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">MTN Mobile Money</div>
+                        <div class="payment-desc">Paiement rapide et sécurisé</div>
+                    </div>
+                    <div class="payment-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+
+                <!-- Airtel Money -->
+                <div class="payment-method" data-method="airtel">
+                    <div class="payment-icon airtel">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">Airtel Money</div>
+                        <div class="payment-desc">Paiement sécurisé Airtel</div>
+                    </div>
+                    <div class="payment-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+
+                <!-- Carte bancaire -->
+                <div class="payment-method" data-method="card">
+                    <div class="payment-icon card">
+                        <i class="far fa-credit-card"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">Carte bancaire</div>
+                        <div class="payment-desc">Visa, Mastercard, etc.</div>
+                    </div>
+                    <div class="payment-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulaire MTN Mobile Money -->
+            <div class="payment-form mobile-money-form active" id="mtnForm">
+                <div class="form-group">
+                    <label>Numéro MTN Mobile Money</label>
+                    <input type="tel" 
+                           id="mtnNumber" 
+                           class="form-input" 
+                           placeholder="Ex: 05 XX XX XX XX ou 06 XX XX XX XX">
+                    <span class="form-hint">Format: 05 12 34 56 78 ou 06 12 34 56 78</span>
+                </div>
+            </div>
+
+            <!-- Formulaire Airtel Money -->
+            <div class="payment-form mobile-money-form" id="airtelForm">
+                <div class="form-group">
+                    <label>Numéro Airtel Money</label>
+                    <input type="tel" 
+                           id="airtelNumber" 
+                           class="form-input" 
+                           placeholder="Ex: 01 XX XX XX XX ou 02 XX XX XX XX">
+                    <span class="form-hint">Format: 01 12 34 56 78 ou 02 12 34 56 78</span>
+                </div>
+            </div>
+
+            <!-- Formulaire Carte bancaire -->
+            <div class="payment-form card-form" id="cardForm">
+                <div class="form-group">
+                    <label>Numéro de carte</label>
+                    <input type="text" 
+                           id="cardNumber" 
+                           class="form-input" 
+                           placeholder="1234 5678 9012 3456"
+                           maxlength="19">
+                </div>
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label>Expiration</label>
+                        <input type="text" 
+                               id="cardExpiry" 
+                               class="form-input" 
+                               placeholder="MM/AA"
+                               maxlength="5">
+                    </div>
+                    <div>
+                        <label>Code CVC</label>
+                        <input type="password" 
+                               id="cardCvc" 
+                               class="form-input" 
+                               placeholder="123"
+                               maxlength="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Titulaire de la carte</label>
+                    <input type="text" 
+                           id="cardHolder" 
+                           class="form-input" 
+                           placeholder="Nom comme sur la carte">
+                </div>
+            </div>
+
+            <!-- Information importante -->
+            <div class="mobile-money-info">
+                <div class="info-title-small">
+                    <i class="fas fa-info-circle"></i>
+                    Information importante
+                </div>
+                <p class="info-text">
+                    Après validation, vous recevrez une demande de confirmation de paiement sur votre téléphone mobile. 
+                    Veuillez valider cette demande pour finaliser votre réservation.
+                </p>
+                <div class="warning-text">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Votre réservation restera en attente jusqu'à confirmation du paiement
+                </div>
+            </div>
+        </div>
+
+        <!-- Bouton de paiement -->
+        <div class="payment-btn-container">
+            <button class="payment-btn" id="confirmPaymentBtn">
+                <i class="fas fa-lock"></i>
+                Valider et confirmer le paiement
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de sélection de la tranche d'âge -->
+    <div class="modal-overlay" id="ageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-tag"></i> Tranche d'âge</h3>
+                <button class="modal-close" id="closeAgeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="option-list" id="ageOptions">
+                    <div class="option-item" data-value="enfant">Enfant (0-12 ans)</div>
+                    <div class="option-item" data-value="adolescent">Adolescent (13-17 ans)</div>
+                    <div class="option-item selected" data-value="adulte">Adulte (18-64 ans)</div>
+                    <div class="option-item" data-value="senior">Senior (65+ ans)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="far fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="far fa-ticket-alt"></i>
+            <span>Mes billets</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fas fa-credit-card"></i>
+            <span>Paiement</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-headset"></i>
+            <span>Assistance</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="far fa-user"></i>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <script>
+        // === DONNÉES UTILISATEUR ===
+        const userData = {
+            firstName: "Bénie",
+            lastName: "AKOUALA",
+            fullName: "Bénie AKOUALA",
+            email: "benie.akouala@email.com",
+            phone: "+242 06 XXX XX XX",
+            ageGroup: "adulte"
+        };
+
+        // === DONNÉES DU VOYAGE ===
+        let tripData = null;
+        let selectedPaymentMethod = 'mtn';
+        let selectedAgeGroup = 'adulte';
+
+        // === INITIALISATION ===
+        function initPaymentPage() {
+            // Récupérer les paramètres de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tripId = urlParams.get('tripId');
+            const departure = urlParams.get('from') || 'Brazzaville';
+            const arrival = urlParams.get('to') || 'Dolisie';
+            const price = urlParams.get('price') || 17000;
+
+            // Charger les données du voyage
+            loadTripData(tripId);
+
+            // Informations utilisateur préremplies mais modifiables
+            document.getElementById('passengerName').value = userData.fullName;
+            document.getElementById('passengerPhone').value = userData.phone;
+            document.getElementById('ageGroup').value = "Adulte";
+
+            // Configurer les événements
+            setupEventListeners();
+
+            // Gérer le logo manquant
+            setupLogoFallback();
+
+            // Formatage des numéros de carte
+            setupInputFormatting();
+        }
+
+        function loadTripData(tripId) {
+            // Simuler le chargement des données du voyage
+            tripData = {
+                id: tripId || 1,
+                company: "Océan du Nord Express",
+                class: "VIP",
+                departureTime: "06:00",
+                arrivalTime: "11:24",
+                price: 17000,
+                departure: "Brazzaville",
+                arrival: "Dolisie"
+            };
+        }
+
+        function setupEventListeners() {
+            // Bouton retour
+            document.getElementById('backBtn').addEventListener('click', () => {
+                if (confirm("Voulez-vous vraiment quitter ? Votre réservation ne sera pas enregistrée.")) {
+                    window.history.back();
+                }
+            });
+
+            // Méthodes de paiement
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    // Désélectionner toutes les méthodes
+                    document.querySelectorAll('.payment-method').forEach(m => {
+                        m.classList.remove('active');
+                    });
+                    
+                    // Sélectionner la méthode cliquée
+                    this.classList.add('active');
+                    selectedPaymentMethod = this.getAttribute('data-method');
+                    
+                    // Afficher le formulaire correspondant
+                    showPaymentForm(selectedPaymentMethod);
+                });
+            });
+
+            // Sélection de la tranche d'âge
+            document.getElementById('ageGroup').addEventListener('click', () => {
+                openAgeModal();
+            });
+
+            // Modal de tranche d'âge
+            document.getElementById('closeAgeModal').addEventListener('click', closeAgeModal);
+            document.getElementById('ageModal').addEventListener('click', function(e) {
+                if (e.target === this) closeAgeModal();
+            });
+
+            // Options de tranche d'âge
+            document.querySelectorAll('#ageOptions .option-item').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Désélectionner toutes les options
+                    document.querySelectorAll('#ageOptions .option-item').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Sélectionner l'option cliquée
+                    this.classList.add('selected');
+                    selectedAgeGroup = this.getAttribute('data-value');
+                    
+                    // Mettre à jour le champ
+                    const displayText = {
+                        'enfant': 'Enfant (0-12 ans)',
+                        'adolescent': 'Adolescent (13-17 ans)',
+                        'adulte': 'Adulte (18-64 ans)',
+                        'senior': 'Senior (65+ ans)'
+                    }[selectedAgeGroup] || 'Adulte';
+                    
+                    document.getElementById('ageGroup').value = displayText;
+                    
+                    // Fermer le modal
+                    setTimeout(() => {
+                        closeAgeModal();
+                    }, 300);
+                });
+            });
+
+            // Validation et paiement
+            document.getElementById('confirmPaymentBtn').addEventListener('click', processPayment);
+        }
+
+        function setupInputFormatting() {
+            // Formatage du numéro de carte
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = formatted.substring(0, 19);
+            });
+
+            // Formatage de la date d'expiration
+            document.getElementById('cardExpiry').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value.substring(0, 5);
+            });
+
+            // Formatage des numéros mobile money
+            document.getElementById('mtnNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                if (value.length > 0) {
+                    // Formater par groupes de 2 chiffres
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i += 2) {
+                        formatted += value.substring(i, i + 2) + ' ';
+                    }
+                    e.target.value = formatted.trim();
+                }
+            });
+
+            document.getElementById('airtelNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                if (value.length > 0) {
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i += 2) {
+                        formatted += value.substring(i, i + 2) + ' ';
+                    }
+                    e.target.value = formatted.trim();
+                }
+            });
+        }
+
+        function showPaymentForm(method) {
+            // Cacher tous les formulaires
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Afficher le formulaire correspondant
+            document.getElementById(`${method}Form`).classList.add('active');
+        }
+
+        function openAgeModal() {
+            document.getElementById('ageModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAgeModal() {
+            document.getElementById('ageModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function validatePayment() {
+            const passengerName = document.getElementById('passengerName').value.trim();
+            const passengerPhone = document.getElementById('passengerPhone').value.trim();
+
+            // Validation du nom
+            if (!passengerName || passengerName.length < 3) {
+                alert("Veuillez saisir un nom valide pour le voyageur");
+                return false;
+            }
+
+            // Validation du téléphone
+            if (!passengerPhone || passengerPhone.replace(/\s/g, '').length < 8) {
+                alert("Veuillez saisir un numéro de téléphone valide");
+                return false;
+            }
+
+            if (selectedPaymentMethod === 'mtn') {
+                const number = document.getElementById('mtnNumber').value.replace(/\s/g, '');
+                if (!number || number.length !== 8) {
+                    alert("Veuillez saisir un numéro MTN valide (8 chiffres)");
+                    return false;
+                }
+                
+            } else if (selectedPaymentMethod === 'airtel') {
+                const number = document.getElementById('airtelNumber').value.replace(/\s/g, '');
+                if (!number || number.length !== 8) {
+                    alert("Veuillez saisir un numéro Airtel valide (8 chiffres)");
+                    return false;
+                }
+                
+            } else if (selectedPaymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const expiry = document.getElementById('cardExpiry').value;
+                const cvc = document.getElementById('cardCvc').value;
+                const holder = document.getElementById('cardHolder').value;
+                
+                if (!cardNumber || cardNumber.length !== 16) {
+                    alert("Veuillez saisir un numéro de carte valide (16 chiffres)");
+                    return false;
+                }
+                
+                if (!expiry || !expiry.match(/^\d{2}\/\d{2}$/)) {
+                    alert("Veuillez saisir une date d'expiration valide (MM/AA)");
+                    return false;
+                }
+                
+                if (!cvc || cvc.length !== 3) {
+                    alert("Le code CVC doit contenir 3 chiffres");
+                    return false;
+                }
+                
+                if (!holder || holder.trim().length < 3) {
+                    alert("Veuillez saisir le nom du titulaire de la carte");
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function processPayment() {
+            if (!validatePayment()) {
+                return;
+            }
+            
+            const paymentBtn = document.getElementById('confirmPaymentBtn');
+            const originalHtml = paymentBtn.innerHTML;
+            
+            // Désactiver le bouton
+            paymentBtn.disabled = true;
+            paymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement en cours...';
+            
+            // Simuler le traitement du paiement
+            setTimeout(() => {
+                // Générer un numéro de réservation
+                const bookingNumber = 'ODN-' + Date.now().toString();
+                
+                // Enregistrer la réservation
+                const booking = {
+                    id: Date.now(),
+                    bookingNumber: bookingNumber,
+                    passengerName: document.getElementById('passengerName').value,
+                    passengerPhone: document.getElementById('passengerPhone').value,
+                    ageGroup: selectedAgeGroup,
+                    trip: tripData,
+                    paymentMethod: selectedPaymentMethod,
+                    amount: tripData.price,
+                    paymentDate: new Date().toISOString(),
+                    status: 'pending_confirmation',
+                    departure: tripData.departure,
+                    arrival: tripData.arrival,
+                    departureTime: tripData.departureTime,
+                    arrivalTime: tripData.arrivalTime,
+                    date: getNextWeekDate(),
+                    seat: generateSeatNumber(),
+                    company: tripData.company
+                };
+                
+                // Sauvegarder dans localStorage
+                saveBooking(booking);
+                
+                // Rediriger vers la page de confirmation
+                window.location.href = `booking-confirmation.html?bookingId=${booking.id}`;
+                
+            }, 2000);
+        }
+
+        function getNextWeekDate() {
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            return nextWeek.toLocaleDateString('fr-FR', options);
+        }
+
+        function generateSeatNumber() {
+            const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const numbers = Array.from({length: 20}, (_, i) => i + 1);
+            const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+            const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
+            return randomLetter + randomNumber;
+        }
+
+        function saveBooking(booking) {
+            try {
+                const existingBookings = JSON.parse(localStorage.getItem('travelBookings')) || [];
+                existingBookings.push(booking);
+                localStorage.setItem('travelBookings', JSON.stringify(existingBookings));
+                return true;
+            } catch (error) {
+                console.error('Erreur lors de la sauvegarde:', error);
+                return false;
+            }
+        }
+
+        function setupLogoFallback() {
+            const logoImg = document.getElementById('logoImage');
+            logoImg.addEventListener('error', function() {
+                this.style.display = 'none';
+                const logoContainer = document.querySelector('.logo');
+                logoContainer.innerHTML = `
+                    <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 20px;">
+                        <i class="fas fa-ship"></i>
+                    </div>
+                    <div class="logo-text">OCÉAN DU NORD</div>
+                `;
+            });
+        }
+
+        // === LANCER LA PAGE ===
+        document.addEventListener('DOMContentLoaded', initPaymentPage);
+    </script>
+</body>
+</html>
