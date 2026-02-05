@@ -25,15 +25,21 @@
             background-color: var(--gris-clair);
             color: var(--gris-texte);
             min-height: 100vh;
+            padding-top: 85px; /* Pour l'AppBar fixe */
             padding-bottom: 80px;
         }
 
-        /* AppBar */
+        /* AppBar FIXE */
         .appbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             background-color: var(--vert);
             padding: 15px 20px;
             color: white;
-            position: relative;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .appbar-content {
@@ -47,7 +53,13 @@
             width: auto;
         }
 
-        .user-greeting {
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-text {
             text-align: right;
         }
 
@@ -59,26 +71,108 @@
         }
 
         .user-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             display: block;
             line-height: 1.2;
         }
 
-        /* Contenu principal */
-        .container { padding: 20px; }
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-        /* Section Destinations (2 cartes seulement) */
-        .section-title {
+        .profile-avatar:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Carte résumé utilisateur */
+        .user-summary-card {
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            border-radius: var(--radius);
+            padding: 25px;
+            color: white;
+            margin: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+
+        .summary-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 15px 0;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .no-trip-message {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .no-trip-message i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .no-trip-message p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Contenu principal */
+        .container { padding: 0 20px; }
+
+        /* Section Destinations */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 20px 0;
+        }
+
         .section-title h2 {
             font-size: 20px;
             font-weight: 600;
         }
+
         .see-more {
             font-size: 14px;
             color: var(--vert);
@@ -104,7 +198,9 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             cursor: pointer;
+            position: relative;
         }
+
         .destination-card.active {
             border-color: var(--vert);
             transform: translateY(-5px);
@@ -117,8 +213,10 @@
             align-items: flex-start;
             margin-bottom: 15px;
         }
+
         .destination-icon {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             background-color: rgba(2, 148, 67, 0.1);
             border-radius: 10px;
             display: flex;
@@ -127,11 +225,13 @@
             color: var(--vert);
             font-size: 18px;
         }
+
         .destination-price {
             font-size: 18px;
             font-weight: 700;
             color: var(--vert);
         }
+
         .destination-price span {
             font-size: 12px;
             color: #999;
@@ -139,11 +239,13 @@
             display: block;
             text-align: right;
         }
+
         .destination-name {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
         }
+
         .destination-schedule {
             font-size: 13px;
             color: #666;
@@ -152,48 +254,7 @@
             gap: 5px;
         }
 
-        /* Section Actions Rapides */
-        .quick-actions {
-            margin-bottom: 40px;
-        }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .action-card {
-            background-color: var(--blanc);
-            border-radius: var(--radius);
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-        .action-icon {
-            width: 60px; height: 60px;
-            margin: 0 auto 15px;
-            background-color: rgba(2, 148, 67, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--vert);
-            font-size: 24px;
-        }
-        .action-card h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 0;
-        }
-
-        /* Section Réserver Voyage */
+        /* Section Réserver Voyage - DISPOSITION EN COLONNE */
         .booking-section {
             background-color: var(--blanc);
             border-radius: var(--radius);
@@ -201,6 +262,7 @@
             box-shadow: var(--shadow);
             margin-bottom: 30px;
         }
+
         .booking-title {
             font-size: 18px;
             font-weight: 600;
@@ -208,12 +270,14 @@
             color: var(--gris-texte);
         }
 
+        /* Champs de sélection - COLONNE */
         .search-inputs {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-bottom: 25px;
         }
+
         .input-group {
             display: flex;
             align-items: center;
@@ -223,16 +287,22 @@
             border-radius: 12px;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            position: relative;
+            width: 100%;
         }
+
         .input-group.active {
             border-color: var(--vert);
             background-color: rgba(2, 148, 67, 0.05);
         }
+
         .input-group i {
             color: var(--vert);
             font-size: 20px;
             width: 24px;
+            flex-shrink: 0;
         }
+
         .input-group input {
             flex: 1;
             border: none;
@@ -242,11 +312,19 @@
             color: var(--gris-texte);
             outline: none;
             cursor: pointer;
+            width: 100%;
+        }
+
+        /* Bouton d'échange CENTRÉ */
+        .swap-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
         }
 
         .swap-button {
-            align-self: center;
-            width: 50px; height: 50px;
+            width: 50px;
+            height: 50px;
             background: var(--vert);
             border: none;
             border-radius: 50%;
@@ -257,17 +335,55 @@
             justify-content: center;
             align-items: center;
             transition: all 0.3s ease;
-            margin: 5px 0;
-            z-index: 2;
+            flex-shrink: 0;
         }
-        .swap-button:hover { transform: rotate(180deg) scale(1.05); }
 
-        /* Villes prédéfinies */
+        .swap-button:hover {
+            transform: rotate(180deg) scale(1.05);
+        }
+
+        /* Carte de prix */
+        .price-card {
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            border-radius: var(--radius);
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .price-card.active {
+            display: block;
+        }
+
+        .estimate-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .currency {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* Villes prédéfinies (9 villes) */
         .cities-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .city-btn {
@@ -282,47 +398,48 @@
             transition: all 0.3s ease;
             text-align: center;
             font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
         .city-btn:hover {
             background-color: rgba(2, 148, 67, 0.1);
             border-color: var(--vert);
         }
+
         .city-btn.active {
             background-color: var(--vert);
             color: white;
             border-color: var(--vert);
         }
 
-        /* Carte Estimation Prix Simplifiée */
-        .price-card {
-            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
-            border-radius: var(--radius);
-            padding: 25px;
-            color: white;
-            margin-bottom: 25px;
-            display: none;
-            text-align: center;
-        }
-        .price-card.active { display: block; animation: fadeIn 0.5s ease; }
-
-        .estimate-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .price {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            line-height: 1;
-        }
-        .currency {
-            font-size: 16px;
+        /* Bouton Autres Villes */
+        .more-cities-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: transparent;
+            border: 2px dashed var(--vert);
+            border-radius: 12px;
+            color: var(--vert);
+            font-size: 15px;
             font-weight: 500;
-            opacity: 0.9;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
         }
 
+        .more-cities-btn:hover {
+            background-color: rgba(2, 148, 67, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Bouton Réserver */
         .book-now-btn {
             width: 100%;
             padding: 18px;
@@ -341,23 +458,249 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(243, 224, 62, 0.3);
         }
+
         .book-now-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(243, 224, 62, 0.4);
         }
+
         .book-now-btn:active {
             transform: translateY(-1px);
         }
 
-        /* Bottom Navigation améliorée */
+        /* Modal des villes complètes */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            background: var(--vert);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .city-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .city-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--gris-clair);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .city-item:hover {
+            background-color: rgba(2, 148, 67, 0.1);
+            transform: translateX(5px);
+        }
+
+        .city-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .city-info i {
+            color: var(--vert);
+            font-size: 18px;
+        }
+
+        .city-item-name {
+            font-weight: 500;
+        }
+
+        .city-item-type {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Aperçu Profil */
+        .profile-preview {
+            position: fixed;
+            top: 85px;
+            right: 20px;
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 300px;
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-preview.active {
+            display: block;
+        }
+
+        .profile-preview::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 25px;
+            width: 16px;
+            height: 16px;
+            background-color: var(--blanc);
+            transform: rotate(45deg);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+
+        .preview-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .preview-user h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .preview-user p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .preview-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .preview-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .view-profile-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--vert);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .view-profile-btn:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+        }
+
+        /* Bottom Navigation - ICÔNES AVEC CONTOUR */
         .bottom-nav {
             position: fixed;
-            bottom: 0; left: 0;
+            bottom: 0;
+            left: 0;
             width: 100%;
             background-color: var(--blanc);
             display: flex;
             justify-content: space-around;
-            padding: 15px 0;
+            padding: 12px 0;
             box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
@@ -366,68 +709,174 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             color: #999;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 11px;
             transition: all 0.3s ease;
             position: relative;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: var(--radius);
         }
-        .nav-item i { font-size: 22px; }
-        
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
         .nav-item.active {
             color: var(--vert);
             background-color: rgba(2, 148, 67, 0.1);
         }
-        .nav-item.active i { color: var(--vert); }
-        
+
+        .nav-item.active i {
+            color: var(--vert);
+        }
+
         .nav-item.active::after {
             content: '';
             position: absolute;
-            top: -8px;
-            width: 6px;
-            height: 6px;
+            bottom: -2px;
+            width: 20px;
+            height: 3px;
             background-color: var(--vert);
-            border-radius: 50%;
+            border-radius: 2px;
         }
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Responsive */
         @media (min-width: 768px) {
-            .container { max-width: 500px; margin: 0 auto; }
-            .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); }
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .bottom-nav {
+                max-width: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .profile-preview {
+                right: calc(50% - 250px);
+            }
         }
+
         @media (max-width: 380px) {
-            .destinations-grid, .actions-grid { grid-template-columns: 1fr; }
-            .cities-grid { grid-template-columns: repeat(2, 1fr); }
-            .container { padding: 15px; }
+            .destinations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .summary-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .profile-preview {
+                width: calc(100% - 40px);
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .cities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                padding: 15px;
+            }
+            
+            .input-group i {
+                font-size: 18px;
+            }
+            
+            .input-group input {
+                font-size: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- AppBar verte -->
+    <!-- AppBar FIXE -->
     <div class="appbar">
         <div class="appbar-content">
             <div class="logo">
                 <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
             </div>
-            <div class="user-greeting">
-                <span class="greeting-small">Bonjour</span>
-                <span class="user-name">Jean DUPONT</span>
+            <div class="user-info">
+                <div class="user-text">
+                    <span class="greeting-small">Bonjour</span>
+                    <span class="user-name">Bénie AKOUALA</span>
+                </div>
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Aperçu Profil -->
+    <div class="profile-preview" id="profilePreview">
+        <div class="preview-header">
+            <div class="preview-avatar">BA</div>
+            <div class="preview-user">
+                <h4>Bénie AKOUALA</h4>
+                <p>Client depuis 2023</p>
+            </div>
+        </div>
+        <div class="preview-info">
+            <div class="preview-item">
+                <span class="preview-label">Email</span>
+                <span class="preview-value">benie.akouala@email.com</span>
+            </div>
+            <div class="preview-item">
+                <span class="preview-label">Téléphone</span>
+                <span class="preview-value">+242 06 XXX XX XX</span>
+            </div>
+            <div class="preview-item">
+                <span class="preview-label">Voyages</span>
+                <span class="preview-value">8 total, 3 cette année</span>
+            </div>
+            <div class="preview-item">
+                <span class="preview-label">Prochain voyage</span>
+                <span class="preview-value">28 Nov - Pointe-Noire</span>
+            </div>
+        </div>
+        <button class="view-profile-btn">Voir profil complet</button>
+    </div>
+
     <!-- Contenu principal -->
     <div class="container">
-        <!-- Destinations Populaires (2 cartes seulement) -->
+        <!-- Carte résumé utilisateur -->
+        <div class="user-summary-card" id="userSummaryCard">
+            <!-- Le contenu sera généré dynamiquement -->
+        </div>
+
+        <!-- Destinations Populaires -->
         <div class="section-title">
             <h2>Destinations populaires</h2>
             <a href="#" class="see-more">
@@ -438,71 +887,49 @@
             <!-- Les 2 premières cartes seulement -->
         </div>
 
-        <!-- Actions Rapides -->
-        <div class="quick-actions">
-            <div class="section-title">
-                <h2>Actions rapides</h2>
-            </div>
-            <div class="actions-grid">
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <h3>Envoyer un colis</h3>
-                </div>
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h3>Envoyer un courrier</h3>
-                </div>
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-bus"></i>
-                    </div>
-                    <h3>Louer un bus</h3>
-                </div>
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-ticket-alt"></i>
-                    </div>
-                    <h3>Mes billets</h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section Réserver un Voyage -->
+        <!-- Section Réserver un Voyage - DISPOSITION EN COLONNE -->
         <div class="booking-section">
             <h2 class="booking-title">Réserver votre voyage</h2>
-            
-            <!-- Champs de sélection -->
+
+            <!-- Champs de sélection - COLONNE -->
             <div class="search-inputs">
+                <!-- Ville de départ - PLEINE LARGEUR -->
                 <div class="input-group active" id="departureGroup">
                     <i class="fas fa-map-marker-alt"></i>
                     <input type="text" id="departureInput" placeholder="Ville de départ" value="Brazzaville" readonly>
                 </div>
                 
-                <button class="swap-button" id="swapButton">
-                    <i class="fas fa-exchange-alt"></i>
-                </button>
+                <!-- Bouton d'échange - CENTRÉ -->
+                <div class="swap-button-container">
+                    <button class="swap-button" id="swapButton">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
                 
+                <!-- Ville d'arrivée - PLEINE LARGEUR -->
                 <div class="input-group" id="arrivalGroup">
                     <i class="fas fa-flag-checkered"></i>
                     <input type="text" id="arrivalInput" placeholder="Ville d'arrivée" value="Pointe-Noire" readonly>
                 </div>
             </div>
 
-            <!-- Villes prédéfinies -->
-            <div class="cities-grid" id="citiesGrid">
-                <!-- Les boutons de ville seront générés par JavaScript -->
-            </div>
-
-            <!-- Carte d'estimation de prix simplifiée -->
+            <!-- Carte de prix -->
             <div class="price-card" id="priceCard">
                 <span class="estimate-label">Prix estimé pour un voyage standard</span>
                 <div class="price" id="estimatedPrice">9 000</div>
                 <span class="currency">FCFA</span>
             </div>
+
+            <!-- 9 Villes prédéfinies -->
+            <div class="cities-grid" id="citiesGrid">
+                <!-- Les 9 boutons de ville seront générés par JavaScript -->
+            </div>
+
+            <!-- Bouton Autres Villes -->
+            <button class="more-cities-btn" id="moreCitiesBtn">
+                <i class="fas fa-search"></i>
+                Autres villes de départ/arrivée
+            </button>
 
             <!-- Bouton Réserver maintenant -->
             <button class="book-now-btn" id="bookNowBtn">
@@ -512,14 +939,29 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation améliorée -->
+    <!-- Modal des villes complètes -->
+    <div class="modal-overlay" id="citiesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-city"></i> Toutes les villes</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="city-list" id="fullCitiesList">
+                    <!-- Liste complète des villes -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation - ICÔNES AVEC CONTOUR -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active">
-            <i class="fas fa-home"></i>
+            <i class="far fa-home"></i> <!-- Icône avec contour -->
             <span>Accueil</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-ticket-alt"></i>
+            <i class="far fa-ticket-alt"></i> <!-- Icône avec contour -->
             <span>Mes billets</span>
         </a>
         <a href="#" class="nav-item">
@@ -527,14 +969,45 @@
             <span>Voyages</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-headset"></i>
+            <span>Assistance</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="far fa-user"></i> <!-- Icône avec contour -->
             <span>Profil</span>
         </a>
     </div>
 
     <script>
-        // === DONNÉES ===
-        const destinations = [
+        // === DONNÉES COMPLÈTES ===
+        // 9 villes principales
+        const mainCities = [
+            "Brazzaville", "Pointe-Noire", "Ouesso", "Nkayi", "Oyo",
+            "Okoyo", "Kéllé", "Sibiti", "Dolisie"
+        ];
+
+        // Toutes les villes disponibles
+        const allCities = [
+            { name: "Brazzaville", type: "Départ principal" },
+            { name: "Pointe-Noire", type: "Côte Atlantique" },
+            { name: "Ouesso", type: "Nord" },
+            { name: "Nkayi", type: "Centre" },
+            { name: "Oyo", type: "Nord" },
+            { name: "Okoyo", type: "Est" },
+            { name: "Kéllé", type: "Centre" },
+            { name: "Sibiti", type: "Plateaux" },
+            { name: "Dolisie", type: "Sud" },
+            { name: "Impfondo", type: "Nord-Est" },
+            { name: "Madingou", type: "Bouenza" },
+            { name: "Gamboma", type: "Plateaux" },
+            { name: "Owando", type: "Cuvette" },
+            { name: "Mossendjo", type: "Niari" },
+            { name: "Makoua", type: "Cuvette" },
+            { name: "Kindamba", type: "Plateaux" }
+        ];
+
+        // Destinations avec prix
+        const allDestinations = [
             { name: "Pointe-Noire", price: 9000, schedule: "Tous les jours", icon: "city" },
             { name: "Ouesso", price: 9000, schedule: "Tous les jours", icon: "tree" },
             { name: "Nkayi", price: 7000, schedule: "Tous les jours", icon: "mountain" },
@@ -543,85 +1016,203 @@
             { name: "Kéllé", price: 15000, schedule: "Mardi Samedi", icon: "town" }
         ];
 
-        const villes = [
-            "Brazzaville", "Pointe-Noire", "Ouesso", "Nkayi", "Oyo", 
-            "Okoyo", "Kéllé", "Sibiti", "Dolisie", "Impfondo"
-        ];
+        // Données utilisateur
+        const userData = {
+            firstName: "Bénie",
+            fullName: "Bénie AKOUALA",
+            email: "benie.akouala@email.com",
+            phone: "+242 06 XXX XX XX",
+            memberSince: "2023",
+            totalTrips: 8,
+            tripsThisYear: 3,
+            lastTrip: {
+                destination: "Pointe-Noire",
+                date: "15 Nov 2024",
+                price: 9000
+            },
+            upcomingTrips: 2,
+            nextTrip: {
+                destination: "Pointe-Noire",
+                date: "28 Nov 2024"
+            }
+        };
+
+        // Matrice de prix
+        const priceMatrix = {
+            "Brazzaville": {
+                "Pointe-Noire": 9000,
+                "Ouesso": 9000,
+                "Nkayi": 7000,
+                "Oyo": 6000,
+                "Okoyo": 10000,
+                "Kéllé": 15000,
+                "Sibiti": 10000,
+                "Dolisie": 8000,
+                "Impfondo": 12000,
+                "Madingou": 7500,
+                "Gamboma": 8500,
+                "Owando": 9500
+            },
+            "Pointe-Noire": {
+                "Brazzaville": 9000,
+                "Nkayi": 6000,
+                "Sibiti": 10000,
+                "Dolisie": 7000
+            }
+        };
 
         // === VARIABLES ===
         let currentDeparture = "Brazzaville";
         let currentArrival = "Pointe-Noire";
+        let isProfilePreviewOpen = false;
 
         // === INITIALISATION ===
         function initApp() {
-            // 1. Charger les 2 premières destinations
+            // 1. Initialiser le résumé utilisateur
+            initUserSummary();
+            
+            // 2. Charger les 2 premières destinations
             loadTopDestinations();
             
-            // 2. Charger les boutons de ville
+            // 3. Charger les 9 boutons de ville
             loadCityButtons();
             
-            // 3. Configurer les événements
+            // 4. Configurer les événements
             setupEventListeners();
             
-            // 4. Mettre à jour l'estimation initiale
+            // 5. Mettre à jour l'estimation initiale
             updatePriceEstimate();
             
-            // 5. Gérer le logo manquant
+            // 6. Gérer le logo manquant
             setupLogoFallback();
+            
+            // 7. Charger la liste complète des villes
+            loadFullCitiesList();
+            
+            // 8. Fermer l'aperçu profil si on clique ailleurs
+            setupClickOutside();
+        }
+
+        function initUserSummary() {
+            const summaryCard = document.getElementById('userSummaryCard');
+            
+            if (userData.upcomingTrips > 0) {
+                summaryCard.innerHTML = `
+                    <div class="summary-header">
+                        <h2>Votre activité</h2>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${userData.totalTrips}</div>
+                            <div class="stat-label">Voyages total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${userData.tripsThisYear}</div>
+                            <div class="stat-label">Cette année</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${userData.upcomingTrips}</div>
+                            <div class="stat-label">À venir</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 14px; opacity: 0.9;">Dernier voyage : ${userData.lastTrip.destination} (${userData.lastTrip.date})</div>
+                    </div>
+                `;
+            } else {
+                summaryCard.innerHTML = `
+                    <div class="no-trip-message">
+                        <i class="fas fa-suitcase"></i>
+                        <p>Vous n'avez aucun voyage à venir.<br>Réservez votre premier voyage !</p>
+                    </div>
+                `;
+            }
         }
 
         function loadTopDestinations() {
             const grid = document.getElementById('destinationsGrid');
             grid.innerHTML = '';
             
-            // Prendre seulement les 2 premières destinations
-            const topDestinations = destinations.slice(0, 2);
+            const topDestinations = allDestinations.slice(0, 2);
             
             topDestinations.forEach(dest => {
-                const card = document.createElement('div');
-                card.className = 'destination-card';
-                card.setAttribute('data-destination', dest.name);
-                
-                // Icône dynamique
-                let iconClass = "fas fa-map-marker-alt";
-                if (dest.icon === "city") iconClass = "fas fa-city";
-                if (dest.icon === "tree") iconClass = "fas fa-tree";
-                if (dest.icon === "mountain") iconClass = "fas fa-mountain";
-                if (dest.icon === "water") iconClass = "fas fa-water";
-                if (dest.icon === "town") iconClass = "fas fa-town";
-                
-                card.innerHTML = `
-                    <div class="destination-header">
-                        <div class="destination-icon">
-                            <i class="${iconClass}"></i>
-                        </div>
-                        <div class="destination-price">${dest.price.toLocaleString()}<span>FCFA</span></div>
-                    </div>
-                    <h3 class="destination-name">${dest.name}</h3>
-                    <p class="destination-schedule"><i class="far fa-calendar-alt"></i> ${dest.schedule}</p>
-                `;
-                
-                card.addEventListener('click', () => selectDestination(dest.name));
+                const card = createDestinationCard(dest);
                 grid.appendChild(card);
             });
+        }
+
+        function createDestinationCard(dest) {
+            const card = document.createElement('div');
+            card.className = 'destination-card';
+            card.setAttribute('data-destination', dest.name);
+            
+            let iconClass = "fas fa-map-marker-alt";
+            if (dest.icon === "city") iconClass = "fas fa-city";
+            if (dest.icon === "tree") iconClass = "fas fa-tree";
+            if (dest.icon === "mountain") iconClass = "fas fa-mountain";
+            if (dest.icon === "water") iconClass = "fas fa-water";
+            if (dest.icon === "town") iconClass = "fas fa-town";
+            
+            card.innerHTML = `
+                <div class="destination-header">
+                    <div class="destination-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="destination-price">${dest.price.toLocaleString()}<span>FCFA</span></div>
+                </div>
+                <h3 class="destination-name">${dest.name}</h3>
+                <p class="destination-schedule"><i class="far fa-calendar-alt"></i> ${dest.schedule}</p>
+            `;
+            
+            card.addEventListener('click', () => selectDestination(dest.name));
+            return card;
         }
 
         function loadCityButtons() {
             const grid = document.getElementById('citiesGrid');
             grid.innerHTML = '';
             
-            villes.forEach(ville => {
+            mainCities.forEach(city => {
                 const btn = document.createElement('button');
                 btn.className = 'city-btn';
-                btn.textContent = ville;
+                btn.textContent = city;
                 
-                // Marquer Brazzaville et Pointe-Noire comme actives initialement
-                if (ville === currentDeparture || ville === currentArrival) {
+                if (city === currentDeparture || city === currentArrival) {
                     btn.classList.add('active');
                 }
                 
-                btn.addEventListener('click', () => selectCity(ville));
+                btn.addEventListener('click', () => selectCity(city));
                 grid.appendChild(btn);
+            });
+        }
+
+        function loadFullCitiesList() {
+            const list = document.getElementById('fullCitiesList');
+            list.innerHTML = '';
+            
+            allCities.forEach(city => {
+                const item = document.createElement('div');
+                item.className = 'city-item';
+                item.setAttribute('data-city', city.name);
+                
+                item.innerHTML = `
+                    <div class="city-info">
+                        <i class="fas fa-city"></i>
+                        <div>
+                            <div class="city-item-name">${city.name}</div>
+                            <div class="city-item-type">${city.type}</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #999;"></i>
+                `;
+                
+                item.addEventListener('click', () => {
+                    selectCityFromModal(city.name);
+                    closeCitiesModal();
+                });
+                
+                list.appendChild(item);
             });
         }
 
@@ -633,15 +1224,25 @@
             document.getElementById('departureGroup').addEventListener('click', () => setActiveInput('departure'));
             document.getElementById('arrivalGroup').addEventListener('click', () => setActiveInput('arrival'));
             
-            // Bouton Réserver maintenant
+            // Bouton Réserver
             document.getElementById('bookNowBtn').addEventListener('click', bookNow);
             
-            // Actions rapides
-            document.querySelectorAll('.action-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const action = this.querySelector('h3').textContent;
-                    handleQuickAction(action);
-                });
+            // Avatar profil
+            document.getElementById('profileAvatar').addEventListener('click', toggleProfilePreview);
+            
+            // Bouton Autres Villes
+            document.getElementById('moreCitiesBtn').addEventListener('click', showAllCities);
+            
+            // Modal des villes
+            document.getElementById('closeModal').addEventListener('click', closeCitiesModal);
+            document.getElementById('citiesModal').addEventListener('click', function(e) {
+                if (e.target === this) closeCitiesModal();
+            });
+            
+            // Menu Assistance
+            document.querySelector('.nav-item:nth-child(4)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Ouverture de l'assistance et du chatbot...");
             });
         }
 
@@ -664,41 +1265,46 @@
             });
         }
 
-        // === FONCTIONNALITÉS ===
-        function selectCity(ville) {
+        function setupClickOutside() {
+            document.addEventListener('click', function(e) {
+                const profilePreview = document.getElementById('profilePreview');
+                const profileAvatar = document.getElementById('profileAvatar');
+                
+                if (isProfilePreviewOpen && 
+                    !profilePreview.contains(e.target) && 
+                    !profileAvatar.contains(e.target)) {
+                    closeProfilePreview();
+                }
+            });
+        }
+
+        // === FONCTIONNALITÉS PRINCIPALES ===
+        function selectCity(city) {
             const activeInput = document.querySelector('.input-group.active');
             const isDeparture = activeInput.id === 'departureGroup';
             
             if (isDeparture) {
-                // Ne pas permettre de sélectionner la même ville pour départ et arrivée
-                if (ville === currentArrival) {
+                if (city === currentArrival) {
                     alert("La ville de départ ne peut pas être la même que l'arrivée");
                     return;
                 }
-                document.getElementById('departureInput').value = ville;
-                currentDeparture = ville;
+                document.getElementById('departureInput').value = city;
+                currentDeparture = city;
             } else {
-                // Ne pas permettre de sélectionner la même ville pour départ et arrivée
-                if (ville === currentDeparture) {
+                if (city === currentDeparture) {
                     alert("La ville d'arrivée ne peut pas être la même que le départ");
                     return;
                 }
-                document.getElementById('arrivalInput').value = ville;
-                currentArrival = ville;
+                document.getElementById('arrivalInput').value = city;
+                currentArrival = city;
             }
             
-            // Mettre à jour les boutons actifs
             updateCityButtons();
-            
-            // Mettre à jour l'estimation de prix
             updatePriceEstimate();
-            
-            // Mettre à jour les destinations actives
             updateDestinationCards();
         }
 
         function selectDestination(destinationName) {
-            // Sélectionner comme ville d'arrivée
             if (destinationName === currentDeparture) {
                 alert("La ville d'arrivée ne peut pas être la même que le départ");
                 return;
@@ -707,36 +1313,33 @@
             document.getElementById('arrivalInput').value = destinationName;
             currentArrival = destinationName;
             
-            // Activer le groupe d'arrivée
             setActiveInput('arrival');
-            
-            // Mettre à jour l'interface
             updateCityButtons();
             updatePriceEstimate();
             updateDestinationCards();
+        }
+
+        function selectCityFromModal(cityName) {
+            selectCity(cityName);
         }
 
         function swapCities() {
             const departureInput = document.getElementById('departureInput');
             const arrivalInput = document.getElementById('arrivalInput');
             
-            // Échanger les valeurs
             const temp = departureInput.value;
             departureInput.value = arrivalInput.value;
             arrivalInput.value = temp;
             
-            // Mettre à jour les variables
             currentDeparture = departureInput.value;
             currentArrival = arrivalInput.value;
             
-            // Animation
             const swapButton = document.getElementById('swapButton');
             swapButton.style.transform = 'rotate(180deg)';
             setTimeout(() => {
                 swapButton.style.transform = 'rotate(0)';
             }, 300);
             
-            // Mettre à jour l'interface
             updateCityButtons();
             updatePriceEstimate();
             updateDestinationCards();
@@ -746,50 +1349,54 @@
             const priceCard = document.getElementById('priceCard');
             const estimatedPrice = document.getElementById('estimatedPrice');
             
-            // Trouver la destination sélectionnée
-            const selectedDest = destinations.find(d => d.name === currentArrival);
+            let price = calculatePrice(currentDeparture, currentArrival);
             
-            if (selectedDest && currentDeparture !== currentArrival) {
-                // Afficher la carte avec animation
+            if (price && currentDeparture !== currentArrival) {
                 priceCard.classList.add('active');
-                
-                // Mettre à jour le prix avec effet de comptage
-                const targetPrice = selectedDest.price;
                 const currentPrice = parseInt(estimatedPrice.textContent.replace(/\s/g, ''));
-                
-                animatePriceChange(currentPrice, targetPrice, estimatedPrice);
+                animatePriceChange(currentPrice, price, estimatedPrice);
             } else {
-                // Cacher la carte si même ville ou destination non trouvée
                 priceCard.classList.remove('active');
             }
         }
 
-        function animatePriceChange(from, to, element) {
-            const duration = 300;
-            const steps = 20;
-            const stepTime = duration / steps;
-            const increment = (to - from) / steps;
-            let current = from;
-            let step = 0;
+        function calculatePrice(departure, arrival) {
+            if (priceMatrix[departure] && priceMatrix[departure][arrival]) {
+                return priceMatrix[departure][arrival];
+            }
             
-            const timer = setInterval(() => {
-                step++;
-                current += increment;
+            const destination = allDestinations.find(d => d.name === arrival);
+            return destination ? destination.price : 0;
+        }
+
+        function animatePriceChange(from, to, element) {
+            const duration = 800;
+            const startTime = Date.now();
+            
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            
+            function update() {
+                const currentTime = Date.now() - startTime;
+                const progress = Math.min(currentTime / duration, 1);
+                const easedProgress = easeInOutCubic(progress);
                 
-                if (step >= steps) {
-                    current = to;
-                    clearInterval(timer);
+                const currentValue = Math.round(from + (to - from) * easedProgress);
+                element.textContent = currentValue.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
                 }
-                
-                element.textContent = Math.round(current).toLocaleString();
-            }, stepTime);
+            }
+            
+            requestAnimationFrame(update);
         }
 
         function bookNow() {
             const departureInput = document.getElementById('departureInput');
             const arrivalInput = document.getElementById('arrivalInput');
             
-            // Validation
             if (!departureInput.value || !arrivalInput.value) {
                 alert("Veuillez sélectionner une ville de départ et d'arrivée");
                 return;
@@ -800,42 +1407,47 @@
                 return;
             }
             
-            // Trouver le prix
-            const selectedDest = destinations.find(d => d.name === currentArrival);
-            const price = selectedDest ? selectedDest.price : 0;
-            
-            // Simulation de réservation
+            const price = calculatePrice(currentDeparture, currentArrival);
             const bookBtn = document.getElementById('bookNowBtn');
             const originalText = bookBtn.innerHTML;
-            bookBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Réservation...';
+            bookBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirection...';
             bookBtn.disabled = true;
             
             setTimeout(() => {
-                // Réactiver le bouton
                 bookBtn.innerHTML = originalText;
                 bookBtn.disabled = false;
-                
-                // Redirection simulée
-                alert(`Réservation du voyage standard :\n\n${currentDeparture} → ${currentArrival}\nPrix: ${price.toLocaleString()} FCFA\n\nVous serez redirigé vers le paiement.`);
-                // En réalité : window.location.href = `booking.html?from=${currentDeparture}&to=${currentArrival}&type=standard`;
+                window.location.href = `search-results.html?from=${encodeURIComponent(currentDeparture)}&to=${encodeURIComponent(currentArrival)}&price=${price}`;
             }, 1000);
         }
 
-        function handleQuickAction(action) {
-            switch(action) {
-                case "Envoyer un colis":
-                    alert("Redirection vers le service fret...");
-                    break;
-                case "Envoyer un courrier":
-                    alert("Redirection vers le service courrier...");
-                    break;
-                case "Louer un bus":
-                    alert("Redirection vers la location de bus...");
-                    break;
-                case "Mes billets":
-                    alert("Redirection vers vos billets...");
-                    break;
+        // === GESTION PROFIL ===
+        function toggleProfilePreview() {
+            if (isProfilePreviewOpen) {
+                closeProfilePreview();
+            } else {
+                openProfilePreview();
             }
+        }
+
+        function openProfilePreview() {
+            document.getElementById('profilePreview').classList.add('active');
+            isProfilePreviewOpen = true;
+        }
+
+        function closeProfilePreview() {
+            document.getElementById('profilePreview').classList.remove('active');
+            isProfilePreviewOpen = false;
+        }
+
+        // === GESTION MODAL VILLES ===
+        function showAllCities() {
+            document.getElementById('citiesModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCitiesModal() {
+            document.getElementById('citiesModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
 
         // === FONCTIONS UTILITAIRES ===
@@ -863,7 +1475,7 @@
         }
 
         function updateDestinationCards() {
-            const destinationCards = document.querySelectorAll('.destination-card');
+            const destinationCards = document.querySelectorAll('.destination-card[data-destination]');
             destinationCards.forEach(card => {
                 card.classList.remove('active');
                 if (card.getAttribute('data-destination') === currentArrival) {
