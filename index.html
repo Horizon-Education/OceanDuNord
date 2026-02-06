@@ -691,7 +691,7 @@
             transform: translateY(-2px);
         }
 
-        /* Bottom Navigation - ICÔNES AVEC CONTOUR */
+        /* Bottom Navigation - MENU MODIFIÉ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -799,6 +799,15 @@
                 width: calc(100% - 40px);
                 right: 20px;
             }
+
+            .nav-item {
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+
+            .nav-item i {
+                font-size: 18px;
+            }
         }
 
         @media (max-width: 350px) {
@@ -816,6 +825,19 @@
             
             .input-group input {
                 font-size: 15px;
+            }
+
+            .bottom-nav {
+                padding: 10px 0;
+            }
+
+            .nav-item {
+                font-size: 9px;
+                padding: 5px 6px;
+            }
+
+            .nav-item i {
+                font-size: 16px;
             }
         }
     </style>
@@ -954,26 +976,26 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation - ICÔNES AVEC CONTOUR -->
+    <!-- Bottom Navigation - MENU MODIFIÉ -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active">
-            <i class="far fa-home"></i> <!-- Icône avec contour -->
+            <i class="fas fa-home"></i>
             <span>Accueil</span>
         </a>
-        <a href="#" class="nav-item">
-            <i class="far fa-ticket-alt"></i> <!-- Icône avec contour -->
-            <span>Mes billets</span>
-        </a>
-        <a href="#" class="nav-item">
+        <a href="voyages.html" class="nav-item">
             <i class="fas fa-bus"></i>
             <span>Voyages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-concierge-bell"></i>
+            <span>Services</span>
         </a>
         <a href="#" class="nav-item">
             <i class="fas fa-headset"></i>
             <span>Assistance</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="far fa-user"></i> <!-- Icône avec contour -->
+            <i class="fas fa-user"></i>
             <span>Profil</span>
         </a>
     </div>
@@ -1091,6 +1113,9 @@
             
             // 8. Fermer l'aperçu profil si on clique ailleurs
             setupClickOutside();
+            
+            // 9. Configurer la navigation du menu
+            setupMenuNavigation();
         }
 
         function initUserSummary() {
@@ -1238,11 +1263,51 @@
             document.getElementById('citiesModal').addEventListener('click', function(e) {
                 if (e.target === this) closeCitiesModal();
             });
+        }
+
+        function setupMenuNavigation() {
+            // Accueil - déjà active
+            document.querySelector('.nav-item:nth-child(1)').addEventListener('click', function(e) {
+                e.preventDefault();
+                // La page est déjà sur l'accueil
+                this.classList.add('active');
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    if (item !== this) item.classList.remove('active');
+                });
+            });
             
-            // Menu Assistance
+            // Voyages
+            document.querySelector('.nav-item:nth-child(2)').addEventListener('click', function(e) {
+                e.preventDefault();
+                // Pour l'instant, on simule une redirection
+                window.location.href = "search-results.html?from=Brazzaville&to=Pointe-Noire&price=9000";
+            });
+            
+            // Services
+            document.querySelector('.nav-item:nth-child(3)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Page Services - À développer");
+                // Mettre à jour l'état actif
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+            
+            // Assistance
             document.querySelector('.nav-item:nth-child(4)').addEventListener('click', function(e) {
                 e.preventDefault();
                 alert("Ouverture de l'assistance et du chatbot...");
+                // Mettre à jour l'état actif
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+            
+            // Profil
+            document.querySelector('.nav-item:nth-child(5)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Page Profil - À développer");
+                // Mettre à jour l'état actif
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
             });
         }
 

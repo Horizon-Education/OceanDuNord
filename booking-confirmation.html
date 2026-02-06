@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Billet - Océan du Nord</title>
+    <title>Confirmation - Océan du Nord</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- QR Code Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
         :root {
             --vert: #029443;
@@ -23,6 +21,7 @@
             --rouge: #FF4444;
             --bleu: #4A90E2;
             --orange: #FF9500;
+            --violet: #9C27B0;
         }
 
         * { 
@@ -37,209 +36,312 @@
             background-color: var(--gris-clair);
             color: var(--gris-texte);
             min-height: 100vh;
-            padding-bottom: 120px;
+            padding-top: 85px;
+            padding-bottom: 80px;
         }
 
-        /* Header */
-        .ticket-header {
-            background-color: var(--vert);
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
-            position: relative;
+        /* Header FIXE - MÊME STYLE QUE LES AUTRES PAGES */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--blanc);
+            padding: 15px 20px;
+            color: var(--gris-texte);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
         }
 
-        .logo-container {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: var(--gris-clair);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--gris-texte);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--gris-border);
+            transform: scale(1.05);
+        }
+
+        .logo {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .logo-img {
-            height: 50px;
+        .logo img {
+            height: 40px;
             width: auto;
         }
 
         .logo-text {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
-            letter-spacing: 1px;
+            color: var(--gris-texte);
         }
 
-        .confirmation-status {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 8px 20px;
-            font-size: 14px;
-            display: inline-flex;
+        .close-btn {
+            background: var(--vert);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--vert-fonce);
+            transform: scale(1.05);
         }
 
         /* Contenu principal */
-        .ticket-container {
-            max-width: 500px;
-            margin: -30px auto 0;
+        .container {
             padding: 0 20px;
-            position: relative;
-            z-index: 1;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        /* Carte de billet */
-        .ticket-card {
-            background-color: var(--blanc);
-            border-radius: var(--radius);
-            padding: 0;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* En-tête du billet */
-        .ticket-header-card {
-            background-color: var(--blanc);
-            padding: 25px;
-            text-align: center;
-            border-bottom: 2px dashed var(--gris-border);
-        }
-
-        .ticket-title {
+        /* Titres */
+        .page-title {
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--vert);
+            color: var(--gris-texte);
+            text-align: center;
         }
 
-        .ticket-subtitle {
+        .page-subtitle {
             font-size: 16px;
             color: #666;
-            margin-bottom: 20px;
-        }
-
-        .booking-number {
-            background-color: var(--gris-clair);
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gris-texte);
-            letter-spacing: 2px;
-            margin: 0 auto;
-            max-width: 300px;
-        }
-
-        /* Corps du billet */
-        .ticket-body {
-            padding: 30px 25px;
-        }
-
-        /* Section compagnie */
-        .company-section {
             text-align: center;
             margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--gris-border);
+            font-weight: 400;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: var(--vert);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 auto 30px;
+            text-align: center;
+            display: block;
+            width: fit-content;
+        }
+
+        /* Carte de réservation COMPACTE */
+        .ticket-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 30px;
+        }
+
+        /* En-tête de la carte */
+        .ticket-header {
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .company-logo {
-            font-size: 32px;
-            color: var(--vert);
-            margin-bottom: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .company-logo img {
+            width: 30px;
+            height: 30px;
         }
 
         .company-name {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
-            color: var(--gris-texte);
         }
 
-        .company-slogan {
+        .booking-number {
             font-size: 14px;
-            color: #666;
-            margin-top: 5px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
-        /* Section voyageur */
-        .passenger-section {
-            margin-bottom: 30px;
+        /* Corps de la carte */
+        .ticket-body {
+            padding: 25px;
         }
 
-        .section-label {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .passenger-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--gris-texte);
-        }
-
-        /* Section voyage */
+        /* Section trajet */
         .journey-section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px dashed var(--gris-border);
         }
 
-        .journey-header {
+        .cities {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .from-to {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
         .city {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .city-label {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
         }
 
         .city-name {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
+            color: var(--gris-texte);
+            margin-bottom: 5px;
+        }
+
+        .city-time {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .journey-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--vert), var(--vert-fonce));
+            margin: 0 15px;
+            position: relative;
+            max-width: 100px;
+        }
+
+        .journey-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: var(--vert);
+            border-radius: 50%;
+        }
+
+        .journey-line::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: var(--vert-fonce);
+            border-radius: 50%;
+        }
+
+        /* Section infos voyageur - COMPACTE en 2 colonnes */
+        .passenger-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gris-texte);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Grille en 2 colonnes pour toutes les infos courtes */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .info-item {
+            background-color: var(--gris-clair);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
             color: var(--gris-texte);
         }
 
-        .arrow {
-            color: var(--vert);
-            font-size: 24px;
+        /* Informations longues sur toute la largeur */
+        .full-width {
+            grid-column: 1 / -1;
         }
 
-        .journey-details {
-            background-color: var(--gris-clair);
-            border-radius: 12px;
-            padding: 20px;
+        /* Section détails - COMPACTE 2 colonnes */
+        .details-section {
+            margin-bottom: 25px;
+        }
+
+        .details-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
         .detail-item {
-            display: flex;
-            flex-direction: column;
+            background-color: var(--gris-clair);
+            padding: 12px;
+            border-radius: 10px;
         }
 
         .detail-label {
@@ -249,23 +351,17 @@
         }
 
         .detail-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--gris-texte);
         }
 
-        .detail-value.price {
-            font-size: 20px;
-            color: var(--vert);
-            font-weight: 700;
-        }
-
-        /* QR Code */
+        /* QR Code - TRÈS GRAND pour scan */
         .qr-section {
             text-align: center;
-            padding: 30px 25px;
-            background-color: rgba(2, 148, 67, 0.05);
+            padding: 30px 20px;
             border-top: 2px dashed var(--gris-border);
+            background-color: var(--blanc);
         }
 
         .qr-title {
@@ -275,100 +371,82 @@
             color: var(--gris-texte);
         }
 
-        .qr-container {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 20px;
-            background-color: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .qr-code {
+            width: 320px;
+            height: 320px;
+            margin: 0 auto;
+            background-color: var(--blanc);
+            border-radius: 15px;
+            padding: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--vert);
         }
 
-        #qrCode {
-            width: 170px;
-            height: 170px;
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .qr-instruction {
-            font-size: 14px;
-            color: #666;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-        /* Informations importantes */
-        .important-info {
-            background-color: rgba(255, 244, 62, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            border-left: 4px solid var(--jaune);
-        }
-
-        .important-title {
             font-size: 16px;
+            color: var(--vert);
+            margin-top: 20px;
             font-weight: 600;
+            padding: 10px 20px;
+            background-color: rgba(2, 148, 67, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        /* Pied de page */
+        .ticket-footer {
+            padding: 20px;
+            text-align: center;
+            background-color: var(--gris-clair);
+            border-top: 2px dashed var(--gris-border);
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: #666;
             margin-bottom: 10px;
-            color: var(--gris-texte);
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .important-list {
-            list-style: none;
+        .footer-note {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
         }
 
-        .important-list li {
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #666;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .important-list li i {
-            color: var(--vert);
-            margin-top: 3px;
-        }
-
-        /* Actions */
-        .actions-section {
+        /* Boutons d'action */
+        .action-buttons {
             display: flex;
             gap: 15px;
-            padding: 20px;
-            background-color: var(--blanc);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-top: 25px;
+            margin-bottom: 30px;
         }
 
         .action-btn {
             flex: 1;
             padding: 16px;
+            border: none;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            border: none;
-            background-color: var(--gris-clair);
-            color: var(--gris-texte);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .action-btn.primary {
@@ -378,29 +456,22 @@
 
         .action-btn.primary:hover {
             background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 148, 67, 0.2);
         }
 
-        .action-btn i {
-            font-size: 24px;
+        .action-btn.secondary {
+            background-color: white;
+            color: var(--vert);
+            border: 2px solid var(--vert);
         }
 
-        /* Status badge */
-        .status-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--vert);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .action-btn.secondary:hover {
+            background-color: rgba(2, 148, 67, 0.05);
+            transform: translateY(-2px);
         }
 
-        /* Bottom Navigation */
+        /* Bottom Navigation - MÊME STYLE QUE LES AUTRES PAGES */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -409,7 +480,7 @@
             background-color: var(--blanc);
             display: flex;
             justify-content: space-around;
-            padding: 15px 0;
+            padding: 12px 0;
             box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
@@ -437,561 +508,524 @@
             background-color: rgba(2, 148, 67, 0.1);
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Responsive */
         @media (max-width: 480px) {
-            .ticket-container {
+            .container {
                 padding: 0 15px;
             }
 
-            .ticket-title {
+            .page-title {
                 font-size: 24px;
             }
 
-            .booking-number {
-                font-size: 18px;
-                padding: 12px;
+            .ticket-body {
+                padding: 20px;
             }
 
-            .journey-details {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .qr-code {
+                width: 280px;
+                height: 280px;
+            }
+
+            .info-grid,
+            .details-grid {
                 grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .qr-container {
-                width: 180px;
-                height: 180px;
-            }
-
-            #qrCode {
-                width: 150px;
-                height: 150px;
-            }
-
-            .actions-section {
-                flex-direction: column;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
             }
         }
 
         @media (max-width: 350px) {
-            .ticket-header {
-                padding: 20px 15px;
-            }
-
             .logo-text {
-                font-size: 16px;
-            }
-
-            .ticket-title {
-                font-size: 20px;
+                display: none;
             }
 
             .company-name {
-                font-size: 18px;
+                font-size: 16px;
             }
 
-            .passenger-name {
-                font-size: 20px;
-            }
-
-            .qr-container {
-                width: 160px;
-                height: 160px;
-            }
-
-            #qrCode {
-                width: 130px;
-                height: 130px;
+            .qr-code {
+                width: 250px;
+                height: 250px;
             }
         }
 
-        /* Impression */
-        @media print {
-            .bottom-nav,
-            .actions-section,
-            .important-info {
-                display: none;
+        @media (max-width: 500px) {
+            .bottom-nav {
+                max-width: 500px;
+                margin: 0 auto;
+                left: 50%;
+                transform: translateX(-50%);
             }
-            
-            body {
-                padding: 0;
-                background-color: white;
-            }
-            
-            .ticket-card {
-                box-shadow: none;
-                margin: 0;
-            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ticket-card {
+            animation: fadeIn 0.6s ease;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="ticket-header">
+    <!-- Header BLANC comme les autres pages -->
+    <div class="header">
         <div class="header-content">
-            <div class="logo-container">
-                <img src="assets/logo.png" alt="Océan du Nord" class="logo-img" id="logoImage">
-                <div class="logo-text">OCÉAN DU NORD</div>
+            <div class="header-left">
+                <button class="back-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
+                    <div class="logo-text">OCÉAN DU NORD</div>
+                </div>
             </div>
-        </div>
-        <div class="confirmation-status">
-            <i class="fas fa-check-circle"></i>
-            Réservation confirmée
+            <button class="close-btn" id="closeBtn">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     </div>
 
     <!-- Contenu principal -->
-    <div class="ticket-container">
-        <!-- Carte de billet -->
+    <div class="container">
+        <h1 class="page-title">Réservation Confirmée !</h1>
+        <p class="page-subtitle">Votre billet a été émis avec succès</p>
+        
+        <div class="status-badge" id="statusBadge">
+            <i class="fas fa-check-circle"></i> Paiement confirmé
+        </div>
+
+        <!-- Carte de réservation COMPACTE -->
         <div class="ticket-card">
-            <div class="status-badge">
-                <i class="fas fa-ticket-alt"></i>
-                Billet électronique
-            </div>
-
-            <!-- En-tête du billet -->
-            <div class="ticket-header-card">
-                <h1 class="ticket-title">Réservation confirmée !</h1>
-                <p class="ticket-subtitle">Votre billet est prêt</p>
-                <div class="booking-number" id="bookingNumberDisplay">ODN-1770306219639</div>
-            </div>
-
-            <!-- Corps du billet -->
-            <div class="ticket-body">
-                <!-- Section compagnie -->
-                <div class="company-section">
+            <!-- En-tête -->
+            <div class="ticket-header">
+                <div class="company-info">
                     <div class="company-logo">
-                        <i class="fas fa-ship"></i>
+                        <img src="assets/logo.png" alt="Océan du Nord">
                     </div>
-                    <div class="company-name" id="companyNameDisplay">OCÉANS DU NORD</div>
-                    <div class="company-slogan">Voyagez en toute sécurité</div>
+                    <div class="company-name">OCÉAN DU NORD</div>
                 </div>
+                <div class="booking-number" id="bookingNumber">ODN-123456</div>
+            </div>
 
-                <!-- Section voyageur -->
-                <div class="passenger-section">
-                    <div class="section-label">Passager</div>
-                    <div class="passenger-name" id="passengerNameDisplay">Bénie AKOUALA</div>
-                </div>
-
-                <!-- Section voyage -->
+            <!-- Corps -->
+            <div class="ticket-body">
+                <!-- Section trajet -->
                 <div class="journey-section">
-                    <div class="journey-header">
-                        <div class="from-to">
-                            <div class="city">
-                                <div class="city-label">De</div>
-                                <div class="city-name" id="departureCityDisplay">Brazzaville</div>
-                            </div>
-                            <div class="arrow">
-                                <i class="fas fa-long-arrow-alt-right"></i>
-                            </div>
-                            <div class="city">
-                                <div class="city-label">À</div>
-                                <div class="city-name" id="arrivalCityDisplay">Dolisie</div>
-                            </div>
+                    <div class="cities">
+                        <div class="city">
+                            <div class="city-name" id="departureCity">Brazzaville</div>
+                            <div class="city-time" id="departureTime">06:00</div>
                         </div>
+                        
+                        <div class="journey-line"></div>
+                        
+                        <div class="city">
+                            <div class="city-name" id="arrivalCity">Dolisie</div>
+                            <div class="city-time" id="arrivalTime">11:24</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section infos voyageur - TOUT EN 2 COLONNES -->
+                <div class="passenger-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i> Informations voyageur
                     </div>
                     
-                    <div class="journey-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Date</div>
-                            <div class="detail-value" id="journeyDateDisplay">22 avr. 4567</div>
+                    <!-- Grille en 2 colonnes pour toutes les infos -->
+                    <div class="info-grid">
+                        <!-- Nom complet sur toute la largeur -->
+                        <div class="info-item full-width">
+                            <div class="info-label">Nom complet</div>
+                            <div class="info-value" id="passengerName">Bénie AKOUALA</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Heure</div>
-                            <div class="detail-value" id="departureTimeDisplay">06:00</div>
+                        
+                        <!-- Téléphone sur toute la largeur -->
+                        <div class="info-item full-width">
+                            <div class="info-label">Téléphone</div>
+                            <div class="info-value" id="passengerPhone">+242 06 12 34 56 78</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Place</div>
-                            <div class="detail-value" id="seatNumberDisplay">E16</div>
+                        
+                        <!-- Classe et Siège en 2 colonnes -->
+                        <div class="info-item">
+                            <div class="info-label">Classe</div>
+                            <div class="info-value" id="ticketClass">VIP</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Prix payé</div>
-                            <div class="detail-value price" id="pricePaidDisplay">18 000 FCFA</div>
+                        <div class="info-item">
+                            <div class="info-label">Siège</div>
+                            <div class="info-value" id="seatNumber">B14</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Payé via</div>
-                            <div class="detail-value" id="paymentMethodDisplay">MTN Mobile Money</div>
+                    </div>
+                </div>
+
+                <!-- Section détails du voyage - EN 2 COLONNES -->
+                <div class="details-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i> Détails du voyage
+                    </div>
+                    <div class="info-grid">
+                        <!-- Date et Durée en 2 colonnes -->
+                        <div class="info-item">
+                            <div class="info-label">Date</div>
+                            <div class="info-value" id="travelDate">15 Mars 2024</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Classe</div>
-                            <div class="detail-value" id="tripClassDisplay">VIP</div>
+                        <div class="info-item">
+                            <div class="info-label">Durée</div>
+                            <div class="info-value" id="travelDuration">5h 24min</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Tranche d'âge</div>
-                            <div class="detail-value" id="ageGroupDisplay">Adulte</div>
+                        
+                        <!-- Montant et Paiement en 2 colonnes -->
+                        <div class="info-item">
+                            <div class="info-label">Montant</div>
+                            <div class="info-value" id="ticketPrice">17 000 FCFA</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Statut</div>
-                            <div class="detail-value" style="color: var(--vert); font-weight: 700;">Confirmé</div>
+                        <div class="info-item">
+                            <div class="info-label">Paiement</div>
+                            <div class="info-value" id="paymentMethod">MTN</div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- QR Code TRÈS GRAND pour scan -->
+                <div class="qr-section">
+                    <div class="qr-title">
+                        <i class="fas fa-qrcode"></i> Code d'embarquement
+                    </div>
+                    <div class="qr-code">
+                        <img src="assets/qr.png" alt="QR Code d'embarquement" id="qrCodeImage">
+                    </div>
+                    <div class="qr-instruction">
+                        Présentez ce code QR à l'entrée
                     </div>
                 </div>
             </div>
 
-            <!-- QR Code -->
-            <div class="qr-section">
-                <div class="qr-title">Code de vérification</div>
-                <div class="qr-container">
-                    <div id="qrCode"></div>
+            <!-- Pied de page -->
+            <div class="ticket-footer">
+                <div class="footer-text">
+                    <i class="fas fa-clock"></i> Arrivez 30 minutes avant le départ
                 </div>
-                <p class="qr-instruction">
-                    Présentez ce QR code à l'embarquement pour scanner votre billet
-                </p>
+                <div class="footer-note">
+                    Billetterie électronique Océan du Nord
+                </div>
             </div>
         </div>
 
-        <!-- Informations importantes -->
-        <div class="important-info">
-            <div class="important-title">
-                <i class="fas fa-exclamation-circle"></i>
-                Instructions importantes
-            </div>
-            <ul class="important-list">
-                <li>
-                    <i class="fas fa-clock"></i>
-                    Présentez-vous au moins 45 minutes avant le départ
-                </li>
-                <li>
-                    <i class="fas fa-id-card"></i>
-                    Ayez une pièce d'identité avec photo
-                </li>
-                <li>
-                    <i class="fas fa-suitcase"></i>
-                    Bagages limités à 20kg en soute + 5kg en cabine
-                </li>
-                <li>
-                    <i class="fas fa-qrcode"></i>
-                    Affichez ce QR code sur votre téléphone ou imprimez-le
-                </li>
-            </ul>
-        </div>
-
-        <!-- Actions -->
-        <div class="actions-section">
-            <button class="action-btn primary" id="downloadBtn">
-                <i class="fas fa-download"></i>
-                Télécharger
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+            <button class="action-btn primary" id="shareBtn">
+                <i class="fas fa-share-alt"></i> Partager
             </button>
-            <button class="action-btn" id="shareBtn">
-                <i class="fas fa-share-alt"></i>
-                Partager
-            </button>
-            <button class="action-btn" id="printBtn">
-                <i class="fas fa-print"></i>
-                Imprimer
-            </button>
-            <button class="action-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                Accueil
+            <button class="action-btn secondary" id="downloadBtn">
+                <i class="fas fa-download"></i> Télécharger
             </button>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation - MENU VOYAGES ACTIF -->
     <div class="bottom-nav">
         <a href="index.html" class="nav-item">
-            <i class="far fa-home"></i>
+            <i class="fas fa-home"></i>
             <span>Accueil</span>
         </a>
-        <a href="#" class="nav-item active">
-            <i class="far fa-ticket-alt"></i>
-            <span>Mes billets</span>
-        </a>
-        <a href="#" class="nav-item">
+        <a href="voyages.html" class="nav-item active">
             <i class="fas fa-bus"></i>
             <span>Voyages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-concierge-bell"></i>
+            <span>Services</span>
         </a>
         <a href="#" class="nav-item">
             <i class="fas fa-headset"></i>
             <span>Assistance</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="far fa-user"></i>
+            <i class="fas fa-user"></i>
             <span>Profil</span>
         </a>
     </div>
 
     <script>
-        // === DONNÉES ===
+        // === DONNÉES DES VOYAGES DE LA PAGE DE RECHERCHE ===
+        const tripsData = [
+            {
+                id: 1,
+                company: "Océan du Nord Express",
+                class: "VIP",
+                departureTime: "06:00",
+                arrivalTime: "11:24",
+                duration: "5h 24min",
+                busNumber: "ONE-2024",
+                seatsAvailable: 12,
+                busType: "Volvo B13R",
+                driver: "Jean K.",
+                amenities: [
+                    { name: "Wifi gratuit", icon: "wifi", included: true },
+                    { name: "Climatisation", icon: "snowflake", included: true },
+                    { name: "Confort max", icon: "couch", included: true },
+                    { name: "Repas inclus", icon: "utensils", included: true },
+                    { name: "Eau minérale", icon: "tint", included: true },
+                    { name: "Chargement USB", icon: "mobile-alt", included: true }
+                ],
+                price: 17000,
+                basePrice: 15000,
+                currency: "FCFA",
+                featured: true,
+                notes: "Arrivée 15 minutes avant le départ. Bagages limités à 20kg."
+            }
+        ];
+
+        // === DONNÉES DE LA RÉSERVATION ===
         let bookingData = null;
 
         // === INITIALISATION ===
         function initConfirmationPage() {
-            // Récupérer les paramètres de l'URL
+            // Récupérer l'ID de réservation depuis l'URL
             const urlParams = new URLSearchParams(window.location.search);
             const bookingId = urlParams.get('bookingId');
-
+            
             // Charger les données de réservation
             loadBookingData(bookingId);
-
+            
             // Configurer les événements
             setupEventListeners();
-
-            // Gérer le logo manquant
+            
+            // Gérer les logos manquants
             setupLogoFallback();
+            setupQrCodeFallback();
         }
 
         function loadBookingData(bookingId) {
             try {
-                // Récupérer la réservation depuis localStorage
+                // Récupérer depuis localStorage
                 const bookings = JSON.parse(localStorage.getItem('travelBookings')) || [];
-                bookingData = bookings.find(b => b.id.toString() === bookingId);
+                const foundBooking = bookings.find(b => b.id == bookingId);
                 
-                // Si non trouvée, utiliser des données de démo
-                if (!bookingData) {
-                    bookingData = createDemoBooking();
+                if (foundBooking) {
+                    bookingData = foundBooking;
+                    // Récupérer les infos du voyage depuis tripsData
+                    const tripId = bookingData.trip?.id || 1;
+                    const tripInfo = tripsData.find(t => t.id == tripId) || tripsData[0];
+                    
+                    // Déterminer le moyen de paiement simplifié
+                    let paymentMethod = 'MTN';
+                    if (bookingData.paymentMethod === 'airtel') paymentMethod = 'Airtel';
+                    if (bookingData.paymentMethod === 'card') paymentMethod = 'Carte';
+                    
+                    // Combiner les données
+                    bookingData = {
+                        ...bookingData,
+                        ...tripInfo,
+                        departure: bookingData.departure || "Brazzaville",
+                        arrival: bookingData.arrival || "Dolisie",
+                        departureTime: bookingData.departureTime || tripInfo.departureTime,
+                        arrivalTime: bookingData.arrivalTime || tripInfo.arrivalTime,
+                        duration: tripInfo.duration,
+                        price: bookingData.amount || tripInfo.price,
+                        class: bookingData.trip?.class || tripInfo.class,
+                        paymentMethod: paymentMethod,
+                        status: 'confirmed'
+                    };
+                } else {
+                    // Si aucune réservation trouvée, utiliser les données par défaut
+                    bookingData = getSampleData();
                 }
-
+                
                 // Mettre à jour l'interface
-                updateTicketDetails();
-
-                // Générer le QR code
-                generateQRCode();
-
+                updateTicketDisplay();
+                
             } catch (error) {
-                console.error('Erreur lors du chargement des données:', error);
-                bookingData = createDemoBooking();
-                updateTicketDetails();
-                generateQRCode();
+                console.error('Erreur lors du chargement:', error);
+                bookingData = getSampleData();
+                updateTicketDisplay();
             }
         }
 
-        function createDemoBooking() {
+        function getSampleData() {
+            // Données par défaut
+            const defaultTrip = tripsData[0];
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            
             return {
-                id: Date.now(),
-                bookingNumber: 'ODN-' + Date.now().toString().slice(10),
+                bookingNumber: 'ODN-' + Date.now().toString().substring(7, 13),
                 passengerName: 'Bénie AKOUALA',
-                passengerPhone: '+242 06 XXX XX XX',
-                ageGroup: 'adulte',
-                trip: {
-                    company: 'OCÉANS DU NORD',
-                    class: 'VIP',
-                    departureTime: '06:00',
-                    arrivalTime: '11:24',
-                    price: 18000
-                },
-                paymentMethod: 'mtn',
-                amount: 18000,
+                passengerPhone: '+242 06 12 34 56 78',
+                seat: 'B14',
                 departure: 'Brazzaville',
                 arrival: 'Dolisie',
-                date: getFormattedDate(),
-                seat: 'E16',
-                company: 'OCÉANS DU NORD'
+                departureTime: defaultTrip.departureTime,
+                arrivalTime: defaultTrip.arrivalTime,
+                date: getFormattedDate(nextWeek),
+                duration: defaultTrip.duration,
+                price: defaultTrip.price,
+                paymentMethod: 'MTN',
+                class: defaultTrip.class,
+                status: 'confirmed',
+                company: defaultTrip.company
             };
         }
 
-        function getFormattedDate() {
-            const date = new Date();
-            date.setDate(date.getDate() + 7);
-            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        function getFormattedDate(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return date.toLocaleDateString('fr-FR', options);
         }
 
-        function updateTicketDetails() {
+        function updateTicketDisplay() {
             if (!bookingData) return;
-
-            // Numéro de réservation
-            document.getElementById('bookingNumberDisplay').textContent = 
-                bookingData.bookingNumber || 'ODN-' + Date.now().toString().slice(10);
-
-            // Compagnie
-            document.getElementById('companyNameDisplay').textContent = 
-                bookingData.trip?.company || bookingData.company || 'OCÉANS DU NORD';
-
-            // Passager
-            document.getElementById('passengerNameDisplay').textContent = 
-                bookingData.passengerName || 'Bénie AKOUALA';
-
-            // Villes
-            document.getElementById('departureCityDisplay').textContent = 
-                bookingData.departure || 'Brazzaville';
-            document.getElementById('arrivalCityDisplay').textContent = 
-                bookingData.arrival || 'Dolisie';
-
-            // Date et heure
-            document.getElementById('journeyDateDisplay').textContent = 
-                bookingData.date || getFormattedDate();
-            document.getElementById('departureTimeDisplay').textContent = 
-                bookingData.trip?.departureTime || '06:00';
-
-            // Détails supplémentaires
-            document.getElementById('seatNumberDisplay').textContent = 
-                bookingData.seat || 'E16';
-            document.getElementById('pricePaidDisplay').textContent = 
-                (bookingData.amount || 18000).toLocaleString() + ' FCFA';
-            document.getElementById('paymentMethodDisplay').textContent = 
-                formatPaymentMethod(bookingData.paymentMethod);
-            document.getElementById('tripClassDisplay').textContent = 
-                bookingData.trip?.class || 'VIP';
             
-            // Tranche d'âge
-            const ageGroupDisplay = {
-                'enfant': 'Enfant',
-                'adolescent': 'Adolescent',
-                'adulte': 'Adulte',
-                'senior': 'Senior'
-            };
-            document.getElementById('ageGroupDisplay').textContent = 
-                ageGroupDisplay[bookingData.ageGroup] || 'Adulte';
-        }
-
-        function formatPaymentMethod(method) {
-            const methods = {
-                'mtn': 'MTN Mobile Money',
-                'airtel': 'Airtel Money',
-                'card': 'Carte bancaire'
-            };
-            return methods[method] || method || 'MTN Mobile Money';
-        }
-
-        function generateQRCode() {
-            if (!bookingData) return;
-
-            const qrData = {
-                bookingNumber: bookingData.bookingNumber,
-                passengerName: bookingData.passengerName,
-                departure: bookingData.departure,
-                arrival: bookingData.arrival,
-                date: bookingData.date,
-                time: bookingData.trip?.departureTime,
-                seat: bookingData.seat,
-                company: bookingData.trip?.company,
-                verificationCode: generateVerificationCode()
-            };
-
-            // Convertir en string JSON
-            const qrString = JSON.stringify(qrData);
+            // Formatage du prix
+            const formattedPrice = bookingData.price.toLocaleString('fr-FR') + ' FCFA';
             
-            // Générer le QR code
-            try {
-                QRCode.toCanvas(document.getElementById('qrCode'), qrString, {
-                    width: 170,
-                    height: 170,
-                    margin: 1,
-                    color: {
-                        dark: '#017536',
-                        light: '#FFFFFF'
-                    }
-                }, function(error) {
-                    if (error) {
-                        console.error('Erreur QR code:', error);
-                        showQRCodeFallback();
-                    }
-                });
-            } catch (error) {
-                console.error('Erreur génération QR:', error);
-                showQRCodeFallback();
-            }
-        }
-
-        function generateVerificationCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = '';
-            for (let i = 0; i < 8; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
-
-        function showQRCodeFallback() {
-            document.getElementById('qrCode').innerHTML = `
-                <div style="text-align: center; color: #666;">
-                    <div style="font-size: 14px; margin-bottom: 10px; font-weight: 600;">${bookingData.bookingNumber}</div>
-                    <div style="font-size: 12px; opacity: 0.8;">Code non disponible</div>
-                </div>
-            `;
+            // Mettre à jour toutes les informations
+            document.getElementById('bookingNumber').textContent = bookingData.bookingNumber;
+            document.getElementById('passengerName').textContent = bookingData.passengerName;
+            document.getElementById('passengerPhone').textContent = bookingData.passengerPhone;
+            document.getElementById('seatNumber').textContent = bookingData.seat || 'B14';
+            document.getElementById('departureCity').textContent = bookingData.departure;
+            document.getElementById('arrivalCity').textContent = bookingData.arrival;
+            document.getElementById('departureTime').textContent = bookingData.departureTime;
+            document.getElementById('arrivalTime').textContent = bookingData.arrivalTime;
+            document.getElementById('travelDate').textContent = bookingData.date || getFormattedDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
+            document.getElementById('travelDuration').textContent = bookingData.duration || '5h 24min';
+            document.getElementById('ticketPrice').textContent = formattedPrice;
+            document.getElementById('paymentMethod').textContent = bookingData.paymentMethod;
+            document.getElementById('ticketClass').textContent = bookingData.class;
+            
+            // Badge toujours "Paiement confirmé" en vert
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Paiement confirmé';
+            statusBadge.style.backgroundColor = 'var(--vert)';
         }
 
         function setupEventListeners() {
-            // Télécharger
-            document.getElementById('downloadBtn').addEventListener('click', () => {
-                downloadTicket();
+            // Bouton retour
+            document.getElementById('backBtn').addEventListener('click', () => {
+                window.history.back();
             });
 
-            // Partager
-            document.getElementById('shareBtn').addEventListener('click', () => {
-                shareTicket();
+            // Bouton fermer (retour vers voyages.html)
+            document.getElementById('closeBtn').addEventListener('click', () => {
+                window.location.href = 'voyages.html';
             });
 
-            // Imprimer
-            document.getElementById('printBtn').addEventListener('click', () => {
-                window.print();
-            });
+            // Bouton partager
+            document.getElementById('shareBtn').addEventListener('click', shareTicket);
 
-            // Accueil
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'index.html';
-            });
-        }
-
-        function downloadTicket() {
-            // Simuler le téléchargement
-            const downloadBtn = document.getElementById('downloadBtn');
-            const originalHtml = downloadBtn.innerHTML;
-            
-            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            downloadBtn.disabled = true;
-            
-            setTimeout(() => {
-                // Créer un contenu HTML pour le PDF
-                const ticketContent = document.querySelector('.ticket-card').outerHTML;
-                
-                // Dans une version complète, vous utiliseriez une API de génération PDF
-                alert("Billet téléchargé avec succès !");
-                
-                downloadBtn.innerHTML = originalHtml;
-                downloadBtn.disabled = false;
-            }, 1500);
+            // Bouton télécharger
+            document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
         }
 
         function shareTicket() {
             if (navigator.share) {
                 navigator.share({
                     title: 'Mon billet Océan du Nord',
-                    text: `Billet pour ${bookingData.departure} → ${bookingData.arrival} le ${bookingData.date}`,
+                    text: `Billet Océan du Nord - ${bookingData.departure} → ${bookingData.arrival} le ${bookingData.date}`,
                     url: window.location.href
-                }).catch(console.error);
+                })
+                .then(() => console.log('Partage réussi'))
+                .catch(error => console.log('Erreur de partage:', error));
             } else {
-                // Fallback pour les navigateurs sans support
-                navigator.clipboard.writeText(window.location.href)
-                    .then(() => alert('Lien copié dans le presse-papier !'))
-                    .catch(() => alert('Copiez manuellement : ' + window.location.href));
+                // Fallback
+                const shareText = `🎫 BILLET OCÉAN DU NORD\n` +
+                                `📅 ${bookingData.date} • ${bookingData.departureTime}\n` +
+                                `📍 ${bookingData.departure} → ${bookingData.arrival}\n` +
+                                `👤 ${bookingData.passengerName}\n` +
+                                `💺 ${bookingData.seat} • ${bookingData.class}\n` +
+                                `💰 ${bookingData.price.toLocaleString()} FCFA\n` +
+                                `📱 ${bookingData.passengerPhone}\n` +
+                                `🔢 ${bookingData.bookingNumber}`;
+                
+                navigator.clipboard.writeText(shareText)
+                    .then(() => {
+                        alert('Billet copié dans le presse-papier !');
+                    })
+                    .catch(err => {
+                        console.error('Erreur lors de la copie:', err);
+                        alert('Impossible de copier le billet');
+                    });
             }
         }
 
+        function downloadTicket() {
+            const btn = document.getElementById('downloadBtn');
+            const originalHtml = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération...';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Téléchargé !';
+                
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }, 2000);
+                
+                alert('Votre billet a été généré au format PDF.');
+                
+            }, 1500);
+        }
+
         function setupLogoFallback() {
-            const logoImg = document.getElementById('logoImage');
-            logoImg.addEventListener('error', function() {
-                this.style.display = 'none';
-                const logoContainer = document.querySelector('.logo-container');
-                logoContainer.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 50px; height: 50px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 24px;">
-                            <i class="fas fa-ship"></i>
-                        </div>
-                        <div class="logo-text">OCÉAN DU NORD</div>
-                    </div>
+            const logoImgs = document.querySelectorAll('img[src*="logo.png"]');
+            
+            logoImgs.forEach(img => {
+                img.addEventListener('error', function() {
+                    const parent = this.parentElement;
+                    if (parent.classList.contains('company-logo')) {
+                        this.style.display = 'none';
+                        parent.innerHTML = '<i class="fas fa-ship" style="color: var(--vert); font-size: 24px;"></i>';
+                    } else if (parent.classList.contains('logo')) {
+                        this.style.display = 'none';
+                        const logoContainer = document.querySelector('.logo');
+                        logoContainer.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 20px;">
+                                    <i class="fas fa-ship"></i>
+                                </div>
+                                <div class="logo-text">OCÉAN DU NORD</div>
+                            </div>
+                        `;
+                    }
+                });
+            });
+        }
+
+        function setupQrCodeFallback() {
+            const qrImg = document.getElementById('qrCodeImage');
+            
+            qrImg.addEventListener('error', function() {
+                // QR code SVG de secours
+                const qrContainer = this.parentElement;
+                qrContainer.innerHTML = `
+                    <svg width="280" height="280" viewBox="0 0 280 280">
+                        <rect width="280" height="280" fill="#FFFFFF" rx="12" ry="12"/>
+                        <rect x="30" y="30" width="220" height="220" fill="#F5F7F8" rx="8" ry="8"/>
+                        <rect x="45" y="45" width="45" height="45" fill="#029443" rx="6"/>
+                        <rect x="190" y="45" width="45" height="45" fill="#029443" rx="6"/>
+                        <rect x="45" y="190" width="45" height="45" fill="#029443" rx="6"/>
+                        <rect x="117.5" y="117.5" width="45" height="45" fill="#029443" rx="4"/>
+                        <text x="140" y="110" text-anchor="middle" font-family="Poppins, Arial" font-size="16" font-weight="600" fill="#029443">
+                            OCÉAN DU NORD
+                        </text>
+                        <text x="140" y="140" text-anchor="middle" font-family="Poppins, Arial" font-size="14" fill="#666">
+                            ${bookingData?.bookingNumber || 'ODN-XXXXXX'}
+                        </text>
+                        <text x="140" y="165" text-anchor="middle" font-family="Poppins, Arial" font-size="12" fill="#999">
+                            ${bookingData?.passengerName?.split(' ')[0] || 'Voyageur'}
+                        </text>
+                        <text x="140" y="250" text-anchor="middle" font-family="Poppins, Arial" font-size="11" fill="#999">
+                            Présentez à l'embarquement
+                        </text>
+                    </svg>
                 `;
             });
         }

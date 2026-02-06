@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mes Voyages - Océan du Nord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #029443;
+            --vert-fonce: #017536;
+            --jaune: #F3E03E;
+            --blanc: #FFFFFF;
+            --gris-clair: #F5F7F8;
+            --gris-texte: #2E2E2E;
+            --gris-border: #E0E0E0;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(2, 148, 67, 0.1);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --rouge: #FF4444;
+            --bleu: #4A90E2;
+            --orange: #FF9500;
+            --violet: #9C27B0;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            min-height: 100vh;
+            padding-top: 85px;
+            padding-bottom: 80px;
+        }
+
+        /* Header FIXE */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--vert);
+            padding: 15px 20px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Onglets de navigation */
+        .tabs-container {
+            display: flex;
+            background-color: var(--blanc);
+            margin: 0 20px 20px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--vert);
+            border-bottom-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.05);
+        }
+
+        .tab-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background-color: var(--vert);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Section des voyages */
+        .voyages-section {
+            padding: 0 20px;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gris-texte);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* CARTES COURTES DE VOYAGE */
+        .voyage-cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .voyage-card {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            padding: 15px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid var(--vert);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voyage-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .voyage-card.passed {
+            border-left-color: #999;
+            opacity: 0.9;
+        }
+
+        .voyage-card.upcoming {
+            border-left-color: var(--orange);
+        }
+
+        .voyage-card.active {
+            border-left-color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.03);
+        }
+
+        .voyage-card.cancelled {
+            border-left-color: var(--rouge);
+            opacity: 0.7;
+        }
+
+        .voyage-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-completed {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #666;
+        }
+
+        .status-upcoming {
+            background-color: rgba(255, 149, 0, 0.1);
+            color: var(--orange);
+        }
+
+        .status-active {
+            background-color: rgba(2, 148, 67, 0.1);
+            color: var(--vert);
+        }
+
+        .status-cancelled {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: var(--rouge);
+        }
+
+        /* Contenu de la carte courte */
+        .voyage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .voyage-dates {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .voyage-route {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .route-city {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gris-texte);
+        }
+
+        .route-arrow {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .voyage-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--gris-border);
+        }
+
+        .voyage-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .info-item i {
+            font-size: 14px;
+        }
+
+        .voyage-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--vert);
+        }
+
+        .price-small {
+            font-size: 11px;
+            color: #999;
+            font-weight: 400;
+        }
+
+        /* Section vide */
+        .empty-section {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .empty-btn {
+            background-color: var(--vert);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .empty-btn:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+        }
+
+        /* Modal de détail COMPLET */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--blanc);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            background: var(--vert);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* En-tête du modal */
+        .modal-trip-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gris-border);
+        }
+
+        .trip-status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .trip-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gris-texte);
+            margin-bottom: 10px;
+        }
+
+        .trip-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* QR Code Section */
+        .qrcode-section {
+            background: linear-gradient(135deg, rgba(2, 148, 67, 0.05), rgba(74, 144, 226, 0.05));
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 2px solid rgba(2, 148, 67, 0.1);
+        }
+
+        .qrcode-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--vert);
+            margin-bottom: 15px;
+        }
+
+        .qrcode-container {
+            width: 180px;
+            height: 180px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .qrcode-placeholder {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 25%, #e0e0e0 50%, #f0f0f0 50%, #f0f0f0 75%, #e0e0e0 75%);
+            background-size: 20px 20px;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qrcode-placeholder::before {
+            content: "QR CODE";
+            font-size: 10px;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .qrcode-info {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .qrcode-number {
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gris-texte);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Détails du voyage dans le modal */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .detail-card {
+            background-color: var(--gris-clair);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--vert);
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gris-texte);
+        }
+
+        /* Section des passagers */
+        .passengers-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title-modal {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gris-texte);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .passenger-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .passenger-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--gris-clair);
+            border-radius: 10px;
+            border-left: 4px solid var(--vert);
+        }
+
+        .passenger-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .passenger-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--vert), var(--vert-fonce));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .passenger-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gris-texte);
+        }
+
+        .passenger-seat {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Actions du modal */
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .action-btn.primary {
+            background-color: var(--vert);
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            background-color: var(--vert-fonce);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 148, 67, 0.2);
+        }
+
+        .action-btn.secondary {
+            background-color: var(--gris-clair);
+            color: var(--gris-texte);
+            border: 2px solid var(--gris-border);
+        }
+
+        .action-btn.secondary:hover {
+            background-color: #e8e8e8;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.danger {
+            background-color: var(--rouge);
+            color: white;
+        }
+
+        .action-btn.danger:hover {
+            background-color: #ff3333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 68, 68, 0.2);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--blanc);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: var(--vert);
+            background-color: rgba(2, 148, 67, 0.1);
+        }
+
+        .nav-item.active i {
+            color: var(--vert);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .bottom-nav {
+                max-width: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .voyages-section,
+            .tabs-container {
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .voyage-info {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tabs-container {
+                margin: 0 15px 15px;
+            }
+
+            .voyages-section {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .voyage-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .voyage-price {
+                align-self: flex-end;
+            }
+
+            .tab {
+                font-size: 12px;
+                padding: 14px 0;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header FIXE -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="page-title">Mes Voyages</div>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Océan du Nord" id="logoImage">
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglets de navigation -->
+    <div class="tabs-container">
+        <div class="tab active" id="tabUpcoming">
+            À venir
+            <span class="tab-badge" id="upcomingCount">3</span>
+        </div>
+        <div class="tab" id="tabPast">
+            Passés
+            <span class="tab-badge" id="pastCount">8</span>
+        </div>
+        <div class="tab" id="tabAll">
+            Tous
+            <span class="tab-badge" id="allCount">11</span>
+        </div>
+    </div>
+
+    <!-- Section des voyages -->
+    <div class="voyages-section">
+        <div class="section-header" id="sectionHeader">
+            <!-- Contenu dynamique -->
+        </div>
+        
+        <div class="voyage-cards-container" id="voyageCards">
+            <!-- Les cartes de voyage seront générées dynamiquement -->
+        </div>
+
+        <!-- Section vide (affichée quand pas de voyages) -->
+        <div class="empty-section" id="emptySection" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-suitcase"></i>
+            </div>
+            <div class="empty-title">Aucun voyage trouvé</div>
+            <div class="empty-description" id="emptyDescription">
+                Vous n'avez pas de voyages dans cette catégorie.
+            </div>
+            <button class="empty-btn" id="bookNowBtn">
+                <i class="fas fa-plus"></i>
+                Réserver un voyage
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de détail du voyage -->
+    <div class="modal-overlay" id="voyageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-ticket-alt"></i> Détails du voyage</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Les détails seront insérés dynamiquement -->
+                <div id="modalVoyageDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="voyages.html" class="nav-item active">
+            <i class="fas fa-bus"></i>
+            <span>Voyages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-concierge-bell"></i>
+            <span>Services</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-headset"></i>
+            <span>Assistance</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <script>
+        // === DONNÉES DES VOYAGES DU CLIENT ===
+        const clientVoyages = [
+            // Voyages À VENIR
+            {
+                id: 1,
+                type: "upcoming",
+                status: "active",
+                departure: "Brazzaville",
+                arrival: "Pointe-Noire",
+                date: "28 Nov 2024",
+                time: "06:00",
+                arrivalDate: "28 Nov 2024",
+                arrivalTime: "11:24",
+                duration: "5h 24min",
+                company: "Océan du Nord Express",
+                busNumber: "ONE-2024",
+                busType: "Volvo B13R",
+                class: "VIP",
+                price: 17000,
+                currency: "FCFA",
+                seats: ["12A", "12B"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "12A", age: "Adulte" },
+                    { name: "Marc TOURE", seat: "12B", age: "Enfant" }
+                ],
+                bookingRef: "ON-2024-789456",
+                bookingDate: "15 Nov 2024",
+                amenities: ["Wifi", "Climatisation", "Repas", "Eau"],
+                notes: "Présentez-vous 30 minutes avant le départ",
+                station: "Gare Routière Centre-ville",
+                gate: "Porte 3",
+                qrCode: "ON789456123V2024"
+            },
+            {
+                id: 2,
+                type: "upcoming",
+                status: "upcoming",
+                departure: "Pointe-Noire",
+                arrival: "Ouesso",
+                date: "05 Déc 2024",
+                time: "09:30",
+                arrivalDate: "06 Déc 2024",
+                arrivalTime: "07:15",
+                duration: "21h 45min",
+                company: "Transport Rapide Congo",
+                busNumber: "TRC-456",
+                busType: "Mercedes Sprinter",
+                class: "Standard",
+                price: 12000,
+                currency: "FCFA",
+                seats: ["8C"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "8C", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-654321",
+                bookingDate: "10 Nov 2024",
+                amenities: ["Climatisation", "Eau"],
+                notes: "Voyage de nuit avec arrêts",
+                station: "Gare du Nord",
+                gate: "Porte 1",
+                qrCode: "ON654321789V2024"
+            },
+            {
+                id: 3,
+                type: "upcoming",
+                status: "upcoming",
+                departure: "Brazzaville",
+                arrival: "Dolisie",
+                date: "12 Déc 2024",
+                time: "14:00",
+                arrivalDate: "12 Déc 2024",
+                arrivalTime: "18:30",
+                duration: "4h 30min",
+                company: "Voyages Confort+",
+                busNumber: "VC-123",
+                busType: "Iveco Crossway",
+                class: "VIP",
+                price: 8500,
+                currency: "FCFA",
+                seats: ["5A"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "5A", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-321654",
+                bookingDate: "18 Nov 2024",
+                amenities: ["Wifi", "Climatisation", "Collation"],
+                notes: "Service VIP inclus",
+                station: "Gare Sud",
+                gate: "Porte 2",
+                qrCode: "ON321654987V2024"
+            },
+            // Voyages PASSÉS
+            {
+                id: 4,
+                type: "past",
+                status: "completed",
+                departure: "Brazzaville",
+                arrival: "Pointe-Noire",
+                date: "15 Nov 2024",
+                time: "06:00",
+                arrivalDate: "15 Nov 2024",
+                arrivalTime: "11:24",
+                duration: "5h 24min",
+                company: "Océan du Nord Express",
+                busNumber: "ONE-2023",
+                busType: "Volvo B13R",
+                class: "VIP",
+                price: 17000,
+                currency: "FCFA",
+                seats: ["10A"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "10A", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-123456",
+                bookingDate: "01 Nov 2024",
+                amenities: ["Wifi", "Climatisation", "Repas"],
+                notes: "Voyage confortable et à l'heure",
+                station: "Gare Routière Centre-ville",
+                gate: "Porte 3",
+                qrCode: "ON123456789V2024",
+                rating: 4.5,
+                feedback: "Excellent service, chauffeur professionnel"
+            },
+            {
+                id: 5,
+                type: "past",
+                status: "completed",
+                departure: "Brazzaville",
+                arrival: "Nkayi",
+                date: "20 Oct 2024",
+                time: "08:30",
+                arrivalDate: "20 Oct 2024",
+                arrivalTime: "12:45",
+                duration: "4h 15min",
+                company: "Océan du Nord Standard",
+                busNumber: "ONS-789",
+                busType: "Toyota Coaster",
+                class: "Standard",
+                price: 7000,
+                currency: "FCFA",
+                seats: ["15B"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "15B", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-987654",
+                bookingDate: "15 Oct 2024",
+                amenities: ["Climatisation"],
+                notes: "Service ponctuel",
+                station: "Gare Est",
+                gate: "Porte 4",
+                qrCode: "ON987654321V2024",
+                rating: 4.0,
+                feedback: "Bon rapport qualité-prix"
+            },
+            {
+                id: 6,
+                type: "past",
+                status: "completed",
+                departure: "Pointe-Noire",
+                arrival: "Brazzaville",
+                date: "05 Oct 2024",
+                time: "13:00",
+                arrivalDate: "05 Oct 2024",
+                arrivalTime: "18:24",
+                duration: "5h 24min",
+                company: "Océan du Nord Premium",
+                busNumber: "ONP-001",
+                busType: "Setra S 431 DT",
+                class: "Premium",
+                price: 22000,
+                currency: "FCFA",
+                seats: ["2A"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "2A", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-456789",
+                bookingDate: "28 Sep 2024",
+                amenities: ["Wifi", "Siège lit", "Repas gastronomique", "Bar"],
+                notes: "Expérience luxe exceptionnelle",
+                station: "Gare Maritime",
+                gate: "VIP Lounge",
+                qrCode: "ON456789123V2024",
+                rating: 5.0,
+                feedback: "Service exceptionnel, je recommande vivement"
+            },
+            {
+                id: 7,
+                type: "past",
+                status: "cancelled",
+                departure: "Brazzaville",
+                arrival: "Ouesso",
+                date: "30 Sep 2024",
+                time: "07:00",
+                arrivalDate: "30 Sep 2024",
+                arrivalTime: "16:30",
+                duration: "9h 30min",
+                company: "Transport du Nord",
+                busNumber: "TN-321",
+                busType: "Mercedes Sprinter",
+                class: "Standard",
+                price: 9000,
+                currency: "FCFA",
+                seats: ["7D"],
+                passengers: [
+                    { name: "Bénie AKOUALA", seat: "7D", age: "Adulte" }
+                ],
+                bookingRef: "ON-2024-789123",
+                bookingDate: "25 Sep 2024",
+                amenities: ["Climatisation"],
+                notes: "Annulé pour cause technique",
+                station: "Gare du Nord",
+                gate: "Porte 2",
+                qrCode: "ON789123456V2024",
+                cancellationReason: "Problème technique du bus",
+                refundStatus: "Remboursé"
+            }
+        ];
+
+        // === VARIABLES ===
+        let currentTab = 'upcoming';
+        let filteredVoyages = [];
+
+        // === INITIALISATION ===
+        function initPage() {
+            // Calculer les compteurs
+            updateCounters();
+            
+            // Charger les voyages initiaux
+            filterVoyages(currentTab);
+            
+            // Configurer les événements
+            setupEventListeners();
+            
+            // Gérer le logo manquant
+            setupLogoFallback();
+        }
+
+        function updateCounters() {
+            const upcomingCount = clientVoyages.filter(v => v.type === 'upcoming').length;
+            const pastCount = clientVoyages.filter(v => v.type === 'past').length;
+            
+            document.getElementById('upcomingCount').textContent = upcomingCount;
+            document.getElementById('pastCount').textContent = pastCount;
+            document.getElementById('allCount').textContent = clientVoyages.length;
+        }
+
+        function filterVoyages(tab) {
+            currentTab = tab;
+            
+            switch(tab) {
+                case 'upcoming':
+                    filteredVoyages = clientVoyages.filter(v => v.type === 'upcoming');
+                    updateSectionHeader('Voyages à venir', 'Vos prochains déplacements');
+                    break;
+                case 'past':
+                    filteredVoyages = clientVoyages.filter(v => v.type === 'past');
+                    updateSectionHeader('Voyages passés', 'Votre historique de voyages');
+                    break;
+                case 'all':
+                    filteredVoyages = [...clientVoyages];
+                    updateSectionHeader('Tous vos voyages', 'Votre historique complet');
+                    break;
+            }
+            
+            loadVoyageCards();
+        }
+
+        function updateSectionHeader(title, subtitle) {
+            const header = document.getElementById('sectionHeader');
+            header.innerHTML = `
+                <div class="section-title">
+                    <i class="fas fa-route"></i>
+                    ${title}
+                </div>
+                <div class="section-subtitle">${subtitle}</div>
+            `;
+        }
+
+        function loadVoyageCards() {
+            const container = document.getElementById('voyageCards');
+            const emptySection = document.getElementById('emptySection');
+            
+            if (filteredVoyages.length === 0) {
+                container.innerHTML = '';
+                emptySection.style.display = 'block';
+                
+                if (currentTab === 'upcoming') {
+                    document.getElementById('emptyDescription').textContent = 
+                        "Vous n'avez pas de voyages à venir. Réservez votre prochain voyage !";
+                } else {
+                    document.getElementById('emptyDescription').textContent = 
+                        "Vous n'avez pas encore effectué de voyages dans cette catégorie.";
+                }
+            } else {
+                emptySection.style.display = 'none';
+                container.innerHTML = '';
+                
+                filteredVoyages.forEach(voyage => {
+                    const card = createVoyageCard(voyage);
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        function createVoyageCard(voyage) {
+            const card = document.createElement('div');
+            card.className = `voyage-card ${voyage.type} ${voyage.status}`;
+            card.setAttribute('data-voyage-id', voyage.id);
+            
+            // Déterminer le texte du statut
+            let statusText = '';
+            let statusClass = '';
+            
+            switch(voyage.status) {
+                case 'active':
+                    statusText = 'ACTIF';
+                    statusClass = 'status-active';
+                    break;
+                case 'upcoming':
+                    statusText = 'À VENIR';
+                    statusClass = 'status-upcoming';
+                    break;
+                case 'completed':
+                    statusText = 'TERMINÉ';
+                    statusClass = 'status-completed';
+                    break;
+                case 'cancelled':
+                    statusText = 'ANNULÉ';
+                    statusClass = 'status-cancelled';
+                    break;
+            }
+            
+            // Format de la date
+            const formattedDate = formatDate(voyage.date);
+            
+            card.innerHTML = `
+                <div class="voyage-status ${statusClass}">${statusText}</div>
+                
+                <div class="voyage-header">
+                    <div>
+                        <div class="voyage-dates">
+                            <i class="far fa-calendar-alt"></i> ${formattedDate}
+                            <span style="margin: 0 8px;">•</span>
+                            <i class="far fa-clock"></i> ${voyage.time}
+                        </div>
+                        
+                        <div class="voyage-route">
+                            <div class="route-city">${voyage.departure}</div>
+                            <div class="route-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="route-city">${voyage.arrival}</div>
+                        </div>
+                        
+                        <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                            <i class="fas fa-bus"></i> ${voyage.company}
+                            <span style="margin: 0 8px;">•</span>
+                            ${voyage.class}
+                        </div>
+                    </div>
+                    
+                    <div class="voyage-price">
+                        ${voyage.price.toLocaleString()} <span class="price-small">${voyage.currency}</span>
+                    </div>
+                </div>
+                
+                <div class="voyage-details">
+                    <div class="voyage-info">
+                        <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            ${voyage.passengers.length} passager${voyage.passengers.length > 1 ? 's' : ''}
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-chair"></i>
+                            ${voyage.seats.join(', ')}
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-hourglass-half"></i>
+                            ${voyage.duration}
+                        </div>
+                    </div>
+                    
+                    <div style="color: var(--vert); font-size: 20px;">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => showVoyageDetails(voyage));
+            return card;
+        }
+
+        function formatDate(dateString) {
+            const [day, month, year] = dateString.split(' ');
+            return `${day} ${month}`;
+        }
+
+        function showVoyageDetails(voyage) {
+            // Créer le HTML des détails
+            const getStatusInfo = () => {
+                switch(voyage.status) {
+                    case 'active':
+                        return { 
+                            text: 'VOYAGE ACTIF', 
+                            color: '#029443',
+                            bgColor: 'rgba(2, 148, 67, 0.1)',
+                            icon: 'fa-check-circle'
+                        };
+                    case 'upcoming':
+                        return { 
+                            text: 'À VENIR', 
+                            color: '#FF9500',
+                            bgColor: 'rgba(255, 149, 0, 0.1)',
+                            icon: 'fa-clock'
+                        };
+                    case 'completed':
+                        return { 
+                            text: 'TERMINÉ', 
+                            color: '#666',
+                            bgColor: 'rgba(0, 0, 0, 0.1)',
+                            icon: 'fa-check'
+                        };
+                    case 'cancelled':
+                        return { 
+                            text: 'ANNULÉ', 
+                            color: '#FF4444',
+                            bgColor: 'rgba(255, 68, 68, 0.1)',
+                            icon: 'fa-times-circle'
+                        };
+                }
+            };
+            
+            const statusInfo = getStatusInfo();
+            
+            // Passagers HTML
+            const passengersHTML = voyage.passengers.map(passenger => `
+                <div class="passenger-item">
+                    <div class="passenger-info">
+                        <div class="passenger-avatar">${getInitials(passenger.name)}</div>
+                        <div>
+                            <div class="passenger-name">${passenger.name}</div>
+                            <div class="passenger-seat">Siège ${passenger.seat} • ${passenger.age}</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 14px; color: var(--vert); font-weight: 600;">
+                        ${passenger.seat}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Aménités HTML
+            const amenitiesHTML = voyage.amenities.map(amenity => `
+                <span style="display: inline-block; background: rgba(2, 148, 67, 0.1); color: var(--vert); padding: 4px 10px; border-radius: 20px; font-size: 11px; margin: 2px;">
+                    ${amenity}
+                </span>
+            `).join('');
+            
+            // Actions disponibles selon le statut
+            let actionsHTML = '';
+            if (voyage.status === 'active' || voyage.status === 'upcoming') {
+                actionsHTML = `
+                    <button class="action-btn primary" onclick="downloadTicket('${voyage.id}')">
+                        <i class="fas fa-download"></i>
+                        Télécharger billet
+                    </button>
+                    <button class="action-btn secondary" onclick="modifyVoyage('${voyage.id}')">
+                        <i class="fas fa-edit"></i>
+                        Modifier
+                    </button>
+                    <button class="action-btn danger" onclick="cancelVoyage('${voyage.id}')">
+                        <i class="fas fa-times"></i>
+                        Annuler
+                    </button>
+                `;
+            } else if (voyage.status === 'completed') {
+                actionsHTML = `
+                    <button class="action-btn primary" onclick="downloadInvoice('${voyage.id}')">
+                        <i class="fas fa-file-invoice"></i>
+                        Facture
+                    </button>
+                    <button class="action-btn secondary" onclick="rateVoyage('${voyage.id}')">
+                        <i class="fas fa-star"></i>
+                        Noter
+                    </button>
+                `;
+            } else if (voyage.status === 'cancelled') {
+                actionsHTML = `
+                    <button class="action-btn secondary" onclick="rebookVoyage('${voyage.id}')">
+                        <i class="fas fa-redo"></i>
+                        Réserver à nouveau
+                    </button>
+                `;
+            }
+            
+            const modalContent = document.getElementById('modalVoyageDetails');
+            modalContent.innerHTML = `
+                <div class="modal-trip-header">
+                    <div class="trip-status-badge" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                        <i class="fas ${statusInfo.icon}"></i> ${statusInfo.text}
+                    </div>
+                    <div class="trip-title">${voyage.departure} → ${voyage.arrival}</div>
+                    <div class="trip-subtitle">${voyage.date} • Départ ${voyage.time}</div>
+                </div>
+                
+                <div class="qrcode-section">
+                    <div class="qrcode-title">Votre billet électronique</div>
+                    <div class="qrcode-container">
+                        <div class="qrcode-placeholder"></div>
+                    </div>
+                    <div class="qrcode-info">Code QR de validation</div>
+                    <div class="qrcode-number">${voyage.qrCode}</div>
+                    <div style="font-size: 12px; color: #666;">
+                        Présentez ce code QR à l'embarquement
+                    </div>
+                </div>
+                
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Compagnie</div>
+                            <div class="detail-value">${voyage.company}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Bus</div>
+                            <div class="detail-value">${voyage.busNumber} • ${voyage.busType}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Classe</div>
+                            <div class="detail-value">${voyage.class}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Prix</div>
+                            <div class="detail-value">${voyage.price.toLocaleString()} ${voyage.currency}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Réservation</div>
+                            <div class="detail-value">${voyage.bookingRef}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Gare / Porte</div>
+                            <div class="detail-value">${voyage.station} • ${voyage.gate}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-title-modal">
+                    <i class="fas fa-users"></i>
+                    Passagers (${voyage.passengers.length})
+                </div>
+                <div class="passenger-list">
+                    ${passengersHTML}
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <div class="section-title-modal">
+                        <i class="fas fa-concierge-bell"></i>
+                        Services inclus
+                    </div>
+                    <div style="margin-top: 10px;">
+                        ${amenitiesHTML}
+                    </div>
+                </div>
+                
+                ${voyage.notes ? `
+                <div style="background-color: rgba(2, 148, 67, 0.05); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid var(--vert);">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--vert); margin-bottom: 5px;">
+                        <i class="fas fa-info-circle"></i> Notes importantes
+                    </div>
+                    <div style="font-size: 13px; color: #666;">
+                        ${voyage.notes}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${voyage.rating ? `
+                <div style="background-color: rgba(255, 149, 0, 0.05); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid var(--orange);">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--orange); margin-bottom: 5px;">
+                        <i class="fas fa-star"></i> Votre évaluation : ${voyage.rating}/5
+                    </div>
+                    <div style="font-size: 13px; color: #666;">
+                        "${voyage.feedback}"
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${voyage.cancellationReason ? `
+                <div style="background-color: rgba(255, 68, 68, 0.05); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid var(--rouge);">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--rouge); margin-bottom: 5px;">
+                        <i class="fas fa-exclamation-triangle"></i> Voyage annulé
+                    </div>
+                    <div style="font-size: 13px; color: #666;">
+                        <strong>Raison :</strong> ${voyage.cancellationReason}<br>
+                        <strong>Statut remboursement :</strong> ${voyage.refundStatus}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="modal-actions">
+                    ${actionsHTML}
+                </div>
+            `;
+            
+            // Ouvrir le modal
+            document.getElementById('voyageModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function getInitials(name) {
+            return name.split(' ')
+                .map(part => part.charAt(0))
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+
+        function closeVoyageModal() {
+            document.getElementById('voyageModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // === FONCTIONS D'ACTIONS ===
+        function downloadTicket(voyageId) {
+            alert(`Téléchargement du billet pour le voyage ${voyageId}...`);
+            // Ici, normalement, on générerait ou téléchargerait un PDF
+        }
+
+        function downloadInvoice(voyageId) {
+            alert(`Téléchargement de la facture pour le voyage ${voyageId}...`);
+        }
+
+        function modifyVoyage(voyageId) {
+            alert(`Modification du voyage ${voyageId}...`);
+        }
+
+        function cancelVoyage(voyageId) {
+            if (confirm("Êtes-vous sûr de vouloir annuler ce voyage ?")) {
+                alert(`Annulation du voyage ${voyageId}...`);
+            }
+        }
+
+        function rateVoyage(voyageId) {
+            alert(`Ouverture de l'évaluation pour le voyage ${voyageId}...`);
+        }
+
+        function rebookVoyage(voyageId) {
+            alert(`Redirection vers la réservation d'un voyage similaire...`);
+        }
+
+        function setupEventListeners() {
+            // Bouton retour
+            document.getElementById('backBtn').addEventListener('click', () => {
+                window.location.href = "index.html";
+            });
+
+            // Onglets
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const tabId = this.id.replace('tab', '').toLowerCase();
+                    filterVoyages(tabId);
+                });
+            });
+
+            // Modal
+            document.getElementById('closeModal').addEventListener('click', closeVoyageModal);
+            document.getElementById('voyageModal').addEventListener('click', function(e) {
+                if (e.target === this) closeVoyageModal();
+            });
+
+            // Bouton Réserver
+            document.getElementById('bookNowBtn').addEventListener('click', function() {
+                window.location.href = "index.html";
+            });
+
+            // Navigation du menu
+            setupMenuNavigation();
+        }
+
+        function setupMenuNavigation() {
+            // Voyages - déjà active
+            document.querySelector('.nav-item:nth-child(2)').addEventListener('click', function(e) {
+                e.preventDefault();
+                // La page est déjà sur les voyages
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+            
+            // Accueil
+            document.querySelector('.nav-item:nth-child(1)').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = "index.html";
+            });
+            
+            // Services
+            document.querySelector('.nav-item:nth-child(3)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Page Services - À développer");
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+            
+            // Assistance
+            document.querySelector('.nav-item:nth-child(4)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Ouverture de l'assistance et du chatbot...");
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+            
+            // Profil
+            document.querySelector('.nav-item:nth-child(5)').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Page Profil - À développer");
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+        }
+
+        function setupLogoFallback() {
+            const logoImg = document.getElementById('logoImage');
+            logoImg.addEventListener('error', function() {
+                this.style.display = 'none';
+                const logoContainer = document.querySelector('.logo');
+                logoContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--vert); font-size: 20px;">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // === LANCER LA PAGE ===
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

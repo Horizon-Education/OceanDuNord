@@ -165,6 +165,43 @@
             box-shadow: 0 0 0 3px rgba(2, 148, 67, 0.1);
         }
 
+        /* Input avec préfixe */
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--gris-border);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .phone-prefix {
+            padding: 0 16px;
+            background-color: var(--gris-clair);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-right: 2px solid var(--gris-border);
+            font-weight: 600;
+            color: var(--gris-texte);
+            font-size: 16px;
+        }
+
+        .phone-input {
+            flex: 1;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            width: 100%;
+        }
+
+        .phone-input-group:focus-within {
+            border-color: var(--vert);
+            box-shadow: 0 0 0 3px rgba(2, 148, 67, 0.1);
+        }
+
         /* Sélecteur personnalisé */
         .custom-select {
             position: relative;
@@ -230,17 +267,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            color: white;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .payment-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .payment-icon.mtn {
-            background-color: var(--mtn-yellow);
+            background-color: white;
+            border: 1px solid var(--gris-border);
         }
 
         .payment-icon.airtel {
-            background-color: var(--airtel-red);
+            background-color: white;
+            border: 1px solid var(--gris-border);
         }
 
         .payment-icon.card {
@@ -590,12 +634,16 @@
 
             <div class="form-group">
                 <label>Numéro de téléphone</label>
-                <input type="tel" 
-                       id="passengerPhone" 
-                       class="form-input" 
-                       value="+242 06 XXX XX XX"
-                       placeholder="Votre numéro de téléphone">
-                <span class="form-hint">Pour les notifications et la confirmation de paiement</span>
+                <div class="phone-input-group">
+                    <div class="phone-prefix">+242</div>
+                    <input type="tel" 
+                           id="passengerPhone" 
+                           class="phone-input" 
+                           value="06 123 45 67"
+                           placeholder="06 123 45 67"
+                           maxlength="12">
+                </div>
+                <span class="form-hint">Format: +242 06 123 45 67 (9 chiffres après +242)</span>
             </div>
 
             <div class="form-group">
@@ -626,7 +674,7 @@
                 <!-- MTN Mobile Money -->
                 <div class="payment-method active" data-method="mtn">
                     <div class="payment-icon mtn">
-                        <i class="fas fa-mobile-alt"></i>
+                        <img src="assets/mtn.png" alt="MTN Mobile Money">
                     </div>
                     <div class="payment-info">
                         <div class="payment-name">MTN Mobile Money</div>
@@ -640,7 +688,7 @@
                 <!-- Airtel Money -->
                 <div class="payment-method" data-method="airtel">
                     <div class="payment-icon airtel">
-                        <i class="fas fa-mobile-alt"></i>
+                        <img src="assets/airtel.png" alt="Airtel Money">
                     </div>
                     <div class="payment-info">
                         <div class="payment-name">Airtel Money</div>
@@ -663,30 +711,6 @@
                     <div class="payment-check">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                </div>
-            </div>
-
-            <!-- Formulaire MTN Mobile Money -->
-            <div class="payment-form mobile-money-form active" id="mtnForm">
-                <div class="form-group">
-                    <label>Numéro MTN Mobile Money</label>
-                    <input type="tel" 
-                           id="mtnNumber" 
-                           class="form-input" 
-                           placeholder="Ex: 05 XX XX XX XX ou 06 XX XX XX XX">
-                    <span class="form-hint">Format: 05 12 34 56 78 ou 06 12 34 56 78</span>
-                </div>
-            </div>
-
-            <!-- Formulaire Airtel Money -->
-            <div class="payment-form mobile-money-form" id="airtelForm">
-                <div class="form-group">
-                    <label>Numéro Airtel Money</label>
-                    <input type="tel" 
-                           id="airtelNumber" 
-                           class="form-input" 
-                           placeholder="Ex: 01 XX XX XX XX ou 02 XX XX XX XX">
-                    <span class="form-hint">Format: 01 12 34 56 78 ou 02 12 34 56 78</span>
                 </div>
             </div>
 
@@ -734,6 +758,7 @@
                     Information importante
                 </div>
                 <p class="info-text">
+                    Pour les paiements Mobile Money (MTN ou Airtel), le même numéro que celui fourni ci-dessus sera utilisé.
                     Après validation, vous recevrez une demande de confirmation de paiement sur votre téléphone mobile. 
                     Veuillez valider cette demande pour finaliser votre réservation.
                 </p>
@@ -802,7 +827,7 @@
             lastName: "AKOUALA",
             fullName: "Bénie AKOUALA",
             email: "benie.akouala@email.com",
-            phone: "+242 06 XXX XX XX",
+            phone: "06 XXX XX XX",
             ageGroup: "adulte"
         };
 
@@ -833,8 +858,9 @@
 
             // Gérer le logo manquant
             setupLogoFallback();
+            setupOperatorLogoFallback();
 
-            // Formatage des numéros de carte
+            // Formatage des inputs
             setupInputFormatting();
         }
 
@@ -872,7 +898,7 @@
                     this.classList.add('active');
                     selectedPaymentMethod = this.getAttribute('data-method');
                     
-                    // Afficher le formulaire correspondant
+                    // Afficher/masquer les formulaires si nécessaire
                     showPaymentForm(selectedPaymentMethod);
                 });
             });
@@ -922,6 +948,33 @@
         }
 
         function setupInputFormatting() {
+            const phoneInput = document.getElementById('passengerPhone');
+            
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                
+                if (value.length > 0) {
+                    // Formater selon le format XX XXX XX XX
+                    let formatted = '';
+                    
+                    if (value.length <= 2) {
+                        // Premiers 2 chiffres
+                        formatted = value.substring(0, 2);
+                    } else if (value.length <= 5) {
+                        // XX XXX
+                        formatted = value.substring(0, 2) + ' ' + value.substring(2, 5);
+                    } else if (value.length <= 7) {
+                        // XX XXX XX
+                        formatted = value.substring(0, 2) + ' ' + value.substring(2, 5) + ' ' + value.substring(5, 7);
+                    } else {
+                        // XX XXX XX XX (complet)
+                        formatted = value.substring(0, 2) + ' ' + value.substring(2, 5) + ' ' + value.substring(5, 7) + ' ' + value.substring(7, 9);
+                    }
+                    
+                    e.target.value = formatted.trim();
+                }
+            });
+
             // Formatage du numéro de carte
             document.getElementById('cardNumber').addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
@@ -937,40 +990,17 @@
                 }
                 e.target.value = value.substring(0, 5);
             });
-
-            // Formatage des numéros mobile money
-            document.getElementById('mtnNumber').addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                if (value.length > 0) {
-                    // Formater par groupes de 2 chiffres
-                    let formatted = '';
-                    for (let i = 0; i < value.length; i += 2) {
-                        formatted += value.substring(i, i + 2) + ' ';
-                    }
-                    e.target.value = formatted.trim();
-                }
-            });
-
-            document.getElementById('airtelNumber').addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                if (value.length > 0) {
-                    let formatted = '';
-                    for (let i = 0; i < value.length; i += 2) {
-                        formatted += value.substring(i, i + 2) + ' ';
-                    }
-                    e.target.value = formatted.trim();
-                }
-            });
         }
 
         function showPaymentForm(method) {
-            // Cacher tous les formulaires
-            document.querySelectorAll('.payment-form').forEach(form => {
-                form.classList.remove('active');
-            });
+            // Seule la carte bancaire a un formulaire spécifique
+            const cardForm = document.getElementById('cardForm');
             
-            // Afficher le formulaire correspondant
-            document.getElementById(`${method}Form`).classList.add('active');
+            if (method === 'card') {
+                cardForm.classList.add('active');
+            } else {
+                cardForm.classList.remove('active');
+            }
         }
 
         function openAgeModal() {
@@ -986,6 +1016,7 @@
         function validatePayment() {
             const passengerName = document.getElementById('passengerName').value.trim();
             const passengerPhone = document.getElementById('passengerPhone').value.trim();
+            const cleanPhone = passengerPhone.replace(/\s/g, '');
 
             // Validation du nom
             if (!passengerName || passengerName.length < 3) {
@@ -993,23 +1024,26 @@
                 return false;
             }
 
-            // Validation du téléphone
-            if (!passengerPhone || passengerPhone.replace(/\s/g, '').length < 8) {
-                alert("Veuillez saisir un numéro de téléphone valide");
+            // Validation du téléphone - 9 chiffres après +242
+            if (!cleanPhone || cleanPhone.length !== 9) {
+                alert("Veuillez saisir un numéro de téléphone valide (9 chiffres après +242)");
                 return false;
             }
 
+            // Validation spécifique selon la méthode de paiement
             if (selectedPaymentMethod === 'mtn') {
-                const number = document.getElementById('mtnNumber').value.replace(/\s/g, '');
-                if (!number || number.length !== 8) {
-                    alert("Veuillez saisir un numéro MTN valide (8 chiffres)");
+                // Vérifier le préfixe MTN (05 ou 06)
+                const prefix = cleanPhone.substring(0, 2);
+                if (prefix !== '05' && prefix !== '06') {
+                    alert("Les numéros MTN Mobile Money commencent par 05 ou 06");
                     return false;
                 }
                 
             } else if (selectedPaymentMethod === 'airtel') {
-                const number = document.getElementById('airtelNumber').value.replace(/\s/g, '');
-                if (!number || number.length !== 8) {
-                    alert("Veuillez saisir un numéro Airtel valide (8 chiffres)");
+                // Vérifier le préfixe Airtel (01 ou 02)
+                const prefix = cleanPhone.substring(0, 2);
+                if (prefix !== '01' && prefix !== '02') {
+                    alert("Les numéros Airtel Money commencent par 01 ou 02");
                     return false;
                 }
                 
@@ -1060,12 +1094,15 @@
                 // Générer un numéro de réservation
                 const bookingNumber = 'ODN-' + Date.now().toString();
                 
+                // Récupérer le numéro de téléphone formaté
+                const phoneNumber = '+242 ' + document.getElementById('passengerPhone').value;
+                
                 // Enregistrer la réservation
                 const booking = {
                     id: Date.now(),
                     bookingNumber: bookingNumber,
                     passengerName: document.getElementById('passengerName').value,
-                    passengerPhone: document.getElementById('passengerPhone').value,
+                    passengerPhone: phoneNumber,
                     ageGroup: selectedAgeGroup,
                     trip: tripData,
                     paymentMethod: selectedPaymentMethod,
@@ -1128,6 +1165,22 @@
                     </div>
                     <div class="logo-text">OCÉAN DU NORD</div>
                 `;
+            });
+        }
+
+        function setupOperatorLogoFallback() {
+            // Gestion des logos d'opérateurs manquants
+            const operatorLogos = document.querySelectorAll('.payment-icon img');
+            
+            operatorLogos.forEach(img => {
+                img.addEventListener('error', function() {
+                    const parent = this.parentElement;
+                    if (parent.classList.contains('mtn')) {
+                        parent.innerHTML = '<i class="fas fa-mobile-alt" style="color: #FFCC00; font-size: 24px;"></i>';
+                    } else if (parent.classList.contains('airtel')) {
+                        parent.innerHTML = '<i class="fas fa-mobile-alt" style="color: #E30613; font-size: 24px;"></i>';
+                    }
+                });
             });
         }
 
